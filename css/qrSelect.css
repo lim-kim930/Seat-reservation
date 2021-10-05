@@ -1,0 +1,137 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+a,
+a:hover{
+    text-decoration: none !important;
+}
+.header-nav {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+    height: 44px;
+}
+.header-nav img {
+    width: 16px;
+    margin-right: 1px;
+}
+.header-nav span {
+    margin: 0 10px;
+}
+.header-nav span a {
+    display: block;
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    font-size: 16px;
+}
+.header-nav span:nth-child(2){
+    position: absolute;
+    line-height: 44px;
+    font-size: 16px;
+    left: 50%;
+    margin-left: -36px;
+    font-weight: 700;
+}
+.content {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    background-color: #f6f7fc;
+}
+.ap-info {
+	height: 190px;
+	border-radius: 5px;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+	background-color: #fff;
+	padding: 10px;
+	margin: 20px 4% 10px 4%;
+    overflow-y: scroll;
+}
+.ap-info div {
+	margin: 5px;
+}
+.input-warnning {
+    margin-left: 20%;
+    padding: 3px;
+    border-radius: 5px;
+    display: none;
+}
+.input-warnning img {
+    width: 17px;
+    vertical-align: text-top;
+    margin-right: 1px;
+}
+.selection-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+.selection-info div {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 92%;
+    height: 50px;
+    background-color: #fff;
+	box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.selection-info div span {
+    margin: 0 10px;
+    font-size: 14px;
+}
+.selection-info img {
+    width: 17px;
+    margin-right: 1px;
+}
+.selection-info select {
+    position: absolute;
+    width: 50%;
+    left: 45%; 
+    height: 50px;
+    opacity: 0;
+}
+.start {
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 300px;
+    height: 56px;
+    bottom: 0;
+    background-color: #fff;
+    border-top: 1px solid rgb(240, 239, 239);
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+}
+.start a {
+    width: 80%;
+    margin-top: 8px;
+    margin-left: 10%;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+    line-height: 40px;
+    text-align: center;
+    background: linear-gradient(to right, #271cff, #6373ff) !important;
+    border-radius: 20px;
+    outline: none;
+    border: none;
+}
+.weui-dialog,
+.weui-mask {
+    display: none;
+}
+.weui-dialog__bd p {
+    font-size: 20px;
+}
+.weui-dialog__bd p i {
+    width: 21px;
+    height: 21px;
+    margin-top: -3px;
+}

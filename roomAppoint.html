@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/weui.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/roomAppoint.css">
+    <script src="js/jquery-3.5.1.js"></script>
+    <script src="js/ra-self-adaption.js"></script>
+    <script src="js/template-web.js"></script>
+    <title>教室预约</title>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="header-nav">
+        <span><a href="index.html"><img src="images/back.svg"></a></span>
+        <span>教室预约</span>
+    </div>
+    <!-- 主体 -->
+    <div class="content">
+        <div class="hotRoom">
+            <h3>热门教室<span id="moreRoom">更多教室<img src="images/forward_gray.svg" alt=""></span></h3>
+            <div class="scroll_helper">
+                <div class="hr_container">
+
+                </div>
+            </div>
+        </div>
+        <div class="activity">
+            <h3>近期活动
+                <span id="seletRoom">全部教室</span><img src="images/down.svg" alt="">
+                <select id="room-option">
+
+                </select>
+            </h3>
+            <div class="scroll_helper">
+                <div class="act_container">
+                    <!-- <div id="act1"><img src="images/act1.jpeg" alt=""><span class="mask"></span><h4>“媒体之星”评选暨事迹分享会</h4></div>
+                    <div id="act2"><img src="images/act2.jpeg" alt=""><span class="mask"></span><h4>杭州电子科技大学“红船杯”党团知识竞赛</h4></div>
+                    <div id="act3"><img src="images/act1.jpeg" alt=""><span class="mask"></span><h4>“媒体之星”评选暨事迹分享会</h4></div>
+                    <div id="act4"><img src="images/act2.jpeg" alt=""><span class="mask"></span><h4>杭州电子科技大学“红船杯”党团知识竞赛</h4></div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="weui-dialog">
+        <div class="weui-dialog__bd"></div>
+        <div class="weui-dialog__ft">
+            <a href="javascript:redirect()" class="weui-dialog__btn weui-dialog__btn_primary">我知道了</a>
+        </div>
+    </div>
+    <div class="weui-mask"></div>
+    <script type="text/html" id="hr-tpl">
+        {{each rOption}}
+        <div id="{{$value.roomName}}" onclick= "choosen(this)" ><h4>{{$value.roomName}}</h4><span><img src="images/logo1.png" alt=""> {{$value.capicity}}人</span></div>
+        {{/each}}
+	</script>
+    <script type="text/html" id="ro-tpl">
+        {{each rOption}}
+        <option value="{{$index}}">{{$value}}</option>
+        {{/each}}
+	</script>
+    <script type="text/html" id="act-tpl">
+        {{each rOption}}
+        <div id="act1"><img src="images/act1.jpeg" alt=""><span class="mask"></span><h4>“媒体之星”评选暨事迹分享会</h4></div>
+		<option value="{{$index}}">{{$index}} 容量{{$value[0]}}人</option>
+        {{/each}}
+	</script>
+    <script src="js/roomAppoint.js"></script>
+</body>
+
+</html>

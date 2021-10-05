@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/weui.css">
+    <link rel="stylesheet" href="css/roomHomepage.css">
+    <script src="js/jquery-3.5.1.js"></script>
+    <script src="js/hp-self-adaption.js"></script>
+    <script src="js/template-web.js"></script>
+    <title>教室预约</title>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="header-nav">
+        <span><a href="javascript:history.back(-1)"><img src="images/back.svg"></a></span>
+        <span id="idConfig">教室主页</span>
+    </div>
+    <!-- 主体 -->
+    <div class="content">
+        <div class="room-info">
+            <img src="images/room.jpeg" alt="">
+            <div>
+                <h3 id="roomName"></h3>
+                <span id="capicity"></span>
+                <span>设备: 暂无</span>
+                <span>简介: 暂无</span>
+            </div>
+        </div>
+        <div class="scroll_helper">
+            <div class="rec_act">
+                <h3>近期活动</h3>
+                <div class="scroll_helper">
+                    <div class="ra_container">
+                        <span id="warning">暂无活动哦~</span>
+                    </div>
+                </div>
+            </div>
+            <div class="selection-info">
+                <span id="usable"></span>
+                <div class="using-date">
+                    <span>使用日期</span><span><span id="using-date"></span><img src="images/forward_gray.svg"></span>
+                    <select id="date-option">
+
+                    </select>
+                </div>
+                <div class="using-time">
+                    <span>开始时间</span><span><span id="using-time"></span><img src="images/forward_gray.svg"></span>
+                    <select id="time-option">
+
+                    </select>
+                </div>
+                <div class="using-duration">
+                    <span>使用时长</span><span><span id="using-duration"></span><img src="images/forward_gray.svg"></span>
+                    <select id="duration-option">
+
+                    </select>
+                </div>
+                <div class="using-pn">
+                    <span>使用人数</span>
+                    <span class="input-warnning bg-danger"><img src="images/错误.svg">人数不正确</span>
+                    <span style="width: 20%;"><input type="text" id="using-pn" placeholder=" 活动人数"></span>
+                </div>
+                <div class="using-type">
+                    <span>是否是共同体活动</span><span><span id="using-type"></span><img src="images/forward_gray.svg"></span>
+                    <select id="type-option">
+                        <option value="1">是</option>
+                        <option value="2">否</option>
+                    </select>
+                </div>
+                <div class="using-url">
+                    <span>活动推文链接</span>
+                    <span style="width: 60%;"><input type="text" id="using-url" placeholder=" 填写推文链接"></span>
+                </div>
+                <div class="using-tel">
+                    <span>联系电话</span>
+                    <span class="input-warnning bg-danger"><img src="images/错误.svg">号码不正确</span>
+                    <span style="width: 30%;"><input type="text" id="using-tel" placeholder=" 填写联系电话"></span>
+                </div>
+                <div class="using-reason">
+                    <span>申请理由</span>
+                    <span class="input-warnning bg-danger"><img src="images/错误.svg">申请理由不能为空</span>
+                </div>
+                <div>
+                    <textarea type="text" id="using-reason" placeholder=" 请描述你的申请理由,以便辅导员快速审核"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="start">
+            <div class="room-start"><span>提交申请</span></div>
+        </div>
+    </div>
+    <div class="weui-dialog">
+        <div class="weui-dialog__hd" style="font-size: 16px; line-height: 18px;"><i
+                class="glyphicon glyphicon-question-sign"
+                style="color: #f1924e; font-size: 16px; width: 16px; vertical-align: middle;"></i> 你即将预约:</div>
+        <div class="weui-dialog__bd"></div>
+        <div class="weui-dialog__ft">
+            <a href="javascript:cancel();" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+            <a href="javascript:dbCheck(2);" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+        </div>
+    </div>
+    <div class="weui-dialog">
+        <div class="weui-dialog__bd"></div>
+        <div class="weui-dialog__ft">
+            <a href="javascript:redirect()" class="weui-dialog__btn weui-dialog__btn_primary">我知道了</a>
+        </div>
+    </div>
+    <div class="weui-mask"></div>
+    <script type="text/html" id="date-tpl">
+        {{each rOption}}
+		<option value="{{$value}}">{{$value}}</option>
+        {{/each}}
+	</script>
+    </script>
+    <script type="text/html" id="time-tpl">
+        {{each tOption}}
+        <option value="{{$value}}">{{$value}}:00</option>
+        {{/each}}
+    </script>
+    <script type="text/html" id="duration-tpl">
+        {{each dOption}}
+        <option value="{{$value}}">{{$value}}小时</option>
+        {{/each}}
+    </script>
+
+    <script src="js/Gender.js"></script>
+    <script src="js/roomHomePage.js"></script>
+</body>
+
+</html>

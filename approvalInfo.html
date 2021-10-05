@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/weui.css">
+    <link rel="stylesheet" href="css/approvalInfo.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <script src="js/jquery-3.5.1.js"></script>
+    <script src="js/ap-self-adaption.js"></script>
+    <title>预约详情</title>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="header-nav">
+        <span><a href="javascript:history.back(-1)"><img src="images/back.svg"></a></span>
+        <span>申请详情</span>
+    </div>
+    <!-- 主体 -->
+    <div class="content">
+        <div class="ap-info">
+            <div class="ap-room">
+                <span>
+                    <h4>教室:</h4>
+                </span>
+                <span class="text-muted">
+                    <h5 id="ap-room" style="margin: 10px 0 0 0 !important;"></h5>
+                </span>
+            </div>
+            <div class="ap-number">
+                <span>
+                    <h4>使用人数:</h4>
+                </span>
+                <span class="text-muted">
+                    <h5 id="ap-number" style="margin: 10px 0 0 0 !important;"></h5>
+                </span>
+            </div>
+            <div class="ap-user" style="width: 100%; height: 105px;">
+                <span>
+                    <h4>申请人:</h4>
+                </span>
+                <span class="text-muted">
+                    <h5 id="ap-uname" style="margin-top: 0 !important"></h5>
+                    <h5 id="ap-tel" style="margin-top: 0 !important"></h5>
+                </span>
+            </div>
+            <div class="ap-start-time" style="width: 100%; height: 82px;">
+                <span>
+                    <h4 style="margin-bottom: 5px;">使用时间:</h4>
+                </span>
+                <span class="text-muted">
+                    <h5 id="ap-date" style="margin-top: 0 !important"></h5>
+
+                    <h5 id="ap-start-time" style="margin-top: 0 !important;"></h5>
+                </span>
+            </div>
+            <div class="ap-reason" style="width: 100%; height: 82px;">
+                <span>
+                    <h4 style="margin: 10px 0 5px 0;">申请理由:</h4>
+                </span>
+                <div class="text-muted" id="ap-reason"></div>
+            </div>
+            <div class="ap-agree">
+                <button type="button" class="btn" id="agree-btn" disabled onclick="agree()">同意申请</button>
+            </div>
+            <div class="ap-disagree">
+                <button type="button" class="btn btn-danger" id="disagree-btn" disabled onclick="disAgree()">拒绝申请</button>
+            </div>
+        </div>
+    </div>
+    <div class="weui-dialog">
+        <div class="weui-dialog__hd" style="font-size: 16px; line-height: 18px;"><i
+                class="glyphicon glyphicon-question-sign"
+                style="color: #f1924e; font-size: 16px; width: 16px; vertical-align: middle;"></i> 提示</div>
+        <div class="weui-dialog__bd"></div>
+        <div class="weui-dialog__ft">
+            <a href="javascript:cancel();" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+            <a href="javascript:submit();" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+        </div>
+    </div>
+    <div class="weui-dialog">
+        <div class="weui-dialog__bd"></div>
+        <div class="weui-dialog__ft">
+            <a href="javascript:redirect()" class="weui-dialog__btn weui-dialog__btn_primary">我知道了</a>
+        </div>
+    </div>
+    <div class="weui-mask"></div>
+    <script src="js/approvalInfo.js"></script>
+</body>
+
+</html>

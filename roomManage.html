@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/weui.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/roomManage.css">
+    <script src="js/jquery-3.5.1.js"></script>
+    <script src="js/self-adaption.js"></script>
+    <script src="js/template-web.js"></script>
+    <title>教室管理</title>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="header-nav">
+        <span><a href="javascript:history.back(-1)"><img src="images/back.svg"></a></span>
+        <span>教室管理</span>
+        <span></span>
+    </div>
+    <!-- 主体 -->
+    <div class="content">
+        <div class="selection-info">
+            <div class="manage-room">
+                <span>选择需要操作的教室</span><span><span id="manage-room"></span><img src="images/forward_gray.svg"></span>
+                <select id="room-option">
+
+                </select>
+            </div>
+            <div class="manage-state">
+                <span>教室当前状态</span><span><span id="manage-state"></span></span>
+            </div>
+        </div>
+        <div class="start">
+            <div class="seat-start"><span id="seat-start"></span></div>
+        </div>
+    </div>
+    <div class="weui-dialog">
+        <div class="weui-dialog__hd" style="font-size: 16px; line-height: 18px;"><i class="glyphicon glyphicon-question-sign" style="color: #f1924e; font-size: 16px; width: 16px; vertical-align: middle;"></i> 提示</div>
+        <div class="weui-dialog__bd"></div>
+        <div class="weui-dialog__ft">
+          <a href="javascript:cancel();" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+          <a href="javascript:submit();" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+        </div>
+    </div>
+    <div class="weui-dialog">
+        <div class="weui-dialog__bd"></div>
+        <div class="weui-dialog__ft">
+          <a href="javascript:redirect()" class="weui-dialog__btn weui-dialog__btn_primary">我知道了</a>
+        </div>
+    </div>
+    <div class="weui-mask"></div>
+    <script type="text/html" id="ro-tpl">
+        {{each rOption}}
+        <option value="{{$index}}">{{$value}}</option>
+        {{/each}}
+	</script>
+    <script src="js/roomManage.js"></script>
+</body>
+
+</html>

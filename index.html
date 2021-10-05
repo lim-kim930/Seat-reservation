@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/myAppointment.css">
+    <link rel="stylesheet" href="css/personalCenter.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/weui.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/self-adaption.js"></script>
+    <script src="js/jquery-3.5.1.js"></script>
+    <script src="js/template-web.js"></script>
+    <title>座位预约系统</title>
+</head>
+
+<body>
+    <!-- 主体 -->
+    <div class="user-view">
+        <!-- 首页 -->
+        <div id="page_view">
+            <div class="content" id="homepage">
+                <div class="notice">
+                    <p>Hello</p>
+                    <p><span id="call"></span><span id="greeting"></span></p>
+                </div>
+                <div class="select-btn seat-res">
+                    <a href="seatAppoint.html">
+                        <div class="selection-info">
+                            <h3><span class="info_icon"></span>座位预约</h3>
+                            <p>SEAT RESERVATION</p>
+                        </div>
+                        <div class="selection-img">
+                            <img src="images/seat.png">
+                        </div>
+                        <div class="intro">
+                            <p>相对独立且良好的个人学习环境</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="select-btn room-res">
+                    <a href="roomAppoint.html">
+                        <div class="selection-info">
+                            <h3><span class="info_icon"></span>教室预约</h3>
+                            <p>CLASSROOM RESERVATION</p>
+                        </div>
+                        <div class="selection-img">
+                            <img src="images/room.png">
+                        </div>
+                        <div class="intro">
+                            <p>多种功能的教室，满足各种活动需求</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="select-btn code-res">
+                    <a href="qrCode.html">
+                        <div class="selection-info">
+                            <h3><span class="info_icon"></span>扫码预约</h3>
+                            <p>SCAN QR CODE</p>
+                        </div>
+                        <div class="selection-img">
+                            <img src="images/scan.png">
+                        </div>
+                        <div class="intro">
+                            <p>扫码预约，开启学习之旅</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <!-- 我的预约 -->
+            <div class="myAp_content" id="myAppage">
+                <div class="header-nav">
+                    <span>我的预约</span>
+                </div>
+                <div class="content-nav">
+                    <a href="javascript: seatSelect();" id="seat-btn">座位</a><a href="javascript: roomSelect();" id="room-btn">教室</a>
+                    <span id="pointer"></span>
+                </div>
+                <div id="seat-content">
+                    <div class="weui-loadmore">
+                        <span class="weui-primary-loading">
+                            <i class="weui-primary-loading__dot"></i>
+                        </span>
+                        <span class="weui-loadmore__tips">正在加载中</span>
+                    </div>
+                    <span class="warnning"><img src="images/nothing.png" alt="">
+                        <p>这里空空如也~</p>
+                    </span>
+                </div>
+                <div id="room-content">
+                    <div class="weui-loadmore">
+                        <span class="weui-primary-loading">
+                            <i class="weui-primary-loading__dot"></i>
+                        </span>
+                        <span class="weui-loadmore__tips">正在加载中</span>
+                    </div>
+                    <span class="warnning"><img src="images/nothing.png" alt="">
+                        <p>这里空空如也~</p>
+                    </span>
+                </div>
+                <div id="statistic"></div>
+            </div>
+            <!-- 个人中心 -->
+            <div class="pc_content" id="pcpage">
+                <div class="header-nav">
+                    <span>个人中心</span>
+                </div>
+                <div class="user-info">
+                    <div class="user-name"><span class="headPort"></span><span id="user-name"></span></div>
+                    <div class="user-number"><img src="images/unum.svg"><span>学号/职工号:</span><span id="user-number"></span></div>
+                    <div class="user-unit"><img src="images/college.svg"><span>学院:</span><span id="user-unit"></span></div>
+                    <div class="user-type"><img src="images/u_type.svg"><span>用户类型:</span><span id="user-type"></span></div>
+                    <div id="user-approval"><img src="images/approval.svg"><span>所有申请 <img src="images/forward.svg"></span></div>
+                    <div id="room-manage"><img src="images/manage.svg"><span>教室管理 <img src="images/forward.svg"></span></div>
+                    <div id="turn"><img src="images/turn.svg"><span>更改身份 <img src="images/forward.svg"></span></div>
+                    <div id="logout"><img src="images/logout.svg"><span>登出 <img src="images/forward.svg"></span></div>
+                </div>
+            </div>
+        </div>
+        <!-- 底部 -->
+        <div class="footer">
+            <span id="home"><a href="#/home" class="checked"><img src="images/home_after.png" alt="">首页</a></span>
+            <span id="myAp"><a href="#/myAp"><img src="images/myAp_before.png" alt="">我的预约</a></span>
+            <span id="pc"><a href="#/pc"><img src="images/pc_before.png" alt="">个人中心</a></span>
+        </div>
+    </div>
+    <!-- 跳转显示 -->
+    <div class="redirect">
+        <span>正在为您跳转,请稍后...</apan>
+    </div>
+    <script type="text/html" id="seat-tpl">
+        <div class="weui-loadmore">
+            <span class="weui-primary-loading">
+                <i class="weui-primary-loading__dot"></i>
+            </span>
+            <span class="weui-loadmore__tips">正在加载中</span>
+        </div>
+        <span class="warnning"><img src="images/nothing.png" alt="">
+            <p>这里空空如也~</p>
+        </span>
+        {{each ap}}
+        <div class="seat-info {{$value.status.signinClass}}-div" id="{{$index}}">
+            <h4><span id="room-number">{{$value.roomName}}</span>教室&nbsp&nbsp<span id="seat-number">{{$value.setName}}</span>号座位</h4>
+            <h5>使用日期: <span class="text-muted" id="using-date">{{$value.dateUsed}}</span></h5>
+            <h5>开始时间: <span class="text-muted" id="start-time">{{$value.startDate}}:00</span></h5>
+            <h5>结束时间: <span class="text-muted" id="end-time">{{$value.endDate}}:00</span></h5>
+            <div id="sign-info">
+                <span class="{{$value.status.signinClass}}-span" id="signin-info">{{$value.status.signin}}</span>
+                <span class="{{$value.status.signoutClass}}-span" id="signout-info">{{$value.status.signout}}</span>
+            </div>
+        </div>
+        {{/each}}
+    </script>
+    <script type="text/html" id="room-tpl">
+        <div class="weui-loadmore">
+            <span class="weui-primary-loading">
+                <i class="weui-primary-loading__dot"></i>
+            </span>
+            <span class="weui-loadmore__tips">正在加载中</span>
+        </div>
+        <span class="warnning"><img src="images/nothing.png" alt="">
+            <p>这里空空如也~</p>
+        </span>
+        {{each ap}}
+        <div class="seat-info {{$value.status.signinClass}}-div" id="{{$index}}">
+            <h4><span id="room-number">{{$value.roomName}}</span>教室&nbsp&nbsp<span id="seat-number">使用人数:{{$value.num}}</span></h4>
+            <h5>使用日期: <span class="text-muted" id="using-date">{{$value.dateUsed}}</span></h5>
+            <h5>开始时间: <span class="text-muted" id="start-time">{{$value.startDate}}:00</span></h5>
+            <h5>结束时间: <span class="text-muted" id="end-time">{{$value.endDate}}:00</span></h5>
+            <div id="sign-info">
+                <span class="{{$value.status.signinClass}}-span" id="signin-info">{{$value.status.signin}}</span>
+            </div>
+        </div>
+        {{/each}}
+    </script>
+    <script type="text/html" id="statistic-tpl">
+        <div class="seat-times"><h5>预约次数:<span id="seat-times">{{times}}</span>次</h5></div>
+        <div class="breach-times"><h5>违约次数:<span id="breach-times">{{breach}}</span>次</h5></div>
+	</script>
+    <script src="js/personalCenter.js"></script>
+    <script src="js/myAppointment.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>
