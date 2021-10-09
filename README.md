@@ -1,1 +1,2 @@
-# Seat-reservation2.0
+# 座位预约系统
+V2.0
