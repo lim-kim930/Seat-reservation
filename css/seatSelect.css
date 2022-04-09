@@ -63,6 +63,7 @@ a:hover{
 	margin: 5px;
 }
 #seat-container {
+    position: relative;
 	height: 180px;
 	width: 100%;
 	background-color: #fff;
@@ -70,6 +71,24 @@ a:hover{
 }
 #seats {
     padding: 20px 20px 0 20px;
+}
+.room_border {
+    display: none;
+    position: absolute;
+    border: 1px solid #ccc;
+    width: 100px;
+    height: 100px;
+    background-color: rgb(249, 249, 249);
+}
+.door {
+    display: inline-block;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    color: #fff;
+    background: url("../images/door.svg");
+    background-size:  25px;
+    border-radius: 1px;
 }
 .input-warnning {
     margin-left: 20%;
@@ -114,23 +133,30 @@ a:hover{
 	padding: 0;
 	background-color: #bef1aa;
 	border: none;
+    outline: none;
+    position: absolute;
+    z-index: 98;
 }
 .choosen {
     background-color: #6373ff !important;
 }
-.using-time {
+.using-time,
+.using-duration {
     position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
-    margin-bottom: 80px;
     width: 100%;
     height: 50px;
     background-color: #fff;
     border-radius: 10px;
 }
-.using-time span {
+.using-duration {
+    margin-bottom: 80px;
+}
+.using-time span,
+.using-duration span {
     margin: 0 10px;
     font-size: 14px;
     overflow: hidden;
@@ -157,6 +183,7 @@ select {
     background-color: #fff;
     border-top: 1px solid rgb(240, 239, 239);
     box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+    z-index: 99;
 }
 .start a {
     width: 80%;

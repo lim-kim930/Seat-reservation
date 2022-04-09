@@ -1,26 +1,25 @@
-window.onload = function () {
+$(function () {
     $.ajax({
         type: 'get',
-        url: 'https://seat.api.hduapp.com/room/apply/user/lookupallroom',
+        url: 'https://seat.api.hduapp.com/room/list',
         xhrFields: {
             withCredentials: true,
         },
-        contentType: "application/x-www-form-urlencoded",
-        success: function (response) {
+        // headers: { staffID: 19270808 },
+        success: (response) => {
             const rooms = ["全部教室"]
-            for (var i = 0; i < Object.keys(response).length; i++)
-                rooms.push(Object.keys(response)[i])
+            for (var i = 0; i < response.length; i++)
+                if (rooms.indexOf(response[i].belongToBuilding + "教" ) === -1)
+                rooms.push(response[i].belongToBuilding + "教")
             $('.hr_container').html(template('hr-tpl', { rOption: response }));
             $('#room-option').html(template('ro-tpl', { rOption: rooms }));
             // $('.act_container').html(template('act-tpl', { rOption: response }));
         },
-        error: function (xhr) {
-            $('.weui-mask').show();
-            $(".weui-dialog__bd").html('<p id = "2"><i class="weui-icon-warn weui-icon_msg"></i> 发生错误，请稍候刷新再试，或联系管理员</p>');
-            $(".weui-dialog").show(300);
+        error: (xhr) => {
+            errHandle(0, xhr, "教室", "reload")
         }
     })
-}
+})
 function choosen(room) {
     window.location.href = 'roomHomepage.html?room=' + room.id + "&cap=" + $(room).find("span").text();
 }

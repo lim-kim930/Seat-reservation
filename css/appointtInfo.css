@@ -60,7 +60,13 @@ a:hover{
 }
 #ap-room,
 #ap-seat,
+#ap-date,
 #ap-start-time,
+#ap-phone,
+#ap-num,
+#ap-state,
+#ap-reason,
+#ap-refuse,
 #ap-end-time {
     color: #6373ff;
 }
@@ -84,43 +90,52 @@ a:hover{
     width: 50%;
     height: 70px;
 }
-.ap-end-time {
-    margin-right: 50%;
+.reason {
+    width: 100%;
 }
-.ap-info div:nth-child(5),
+/* .ap-info div:nth-child(5),
 .ap-info div:nth-child(6),
 .ap-info div:nth-child(7) {
-    height: 40px;
-}
+    
+} */
 .cancel,
 .sign,
 .leave,
+.delLeave,
+.delete,
 .quit {
     margin-top: 20px;
     padding: 0 15px;
+    height: 40px !important;
+    display: none;
 }
 .cancel img,
 .sign img,
 .leave img,
+.delete img,
+.delLeave img,
 .quit img {
     width: 16px;
     margin-right: 3px;
     vertical-align: text-top;
-}
-.sign {
-    display: none;
 }
 button {
     outline: none !important;
 }
 #sign,
 #leave,
+#delLeave,
 #quit,
+#delete,
 #cancel {
     background-color: rgba(255, 255, 255, 0);
     border: 1px solid #6373ff;
     border-radius: 5px;
     color: #6373ff;
+}
+#reason_label,
+.ap-refuse {
+    display: none;
 }
 .weui-dialog,
 .weui-mask {

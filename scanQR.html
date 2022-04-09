@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
   <title>扫码预约</title>
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/weui.css">
+  <link rel="stylesheet" href="css/weui.min.css">
   <link rel="stylesheet" href="css/qrCode.css">
   <script src="js/jquery-3.5.1.js"></script>
   <script src="js/template-web.js"></script>
@@ -43,21 +43,19 @@
       <div class="weui-dialog__hd"><strong class="weui-dialog__title" id="dialog-title"></strong></div>
       <div class="weui-dialog__bd"></div>
       <div class="weui-dialog__ft">
-        <a href="javascript:cancel();" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+        <a href="javascript:alertCallback('cancel');" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
         <a href="javascript:apsubmit();" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
       </div>
     </div>
     <div class="weui-dialog">
       <div class="weui-dialog__bd"></div>
       <div class="weui-dialog__ft">
-        <a href="javascript:redirect()" class="weui-dialog__btn weui-dialog__btn_primary">我知道了</a>
+        <a href="javascript:alertCallback('redirect', 'qrAppoint.html');" class="weui-dialog__btn weui-dialog__btn_primary">我知道了</a>
       </div>
     </div>
     <div class="weui-mask"></div>
   </div>
-  <script type="text/html" id="info-tpl">
-    <h5>教室:{{room}} 座位:{{seat}}</h5>
-  </script>
+  <script src="js/publicFunction.js"></script>
   <script src="js/jsQCode.js"></script>
 </body>
 

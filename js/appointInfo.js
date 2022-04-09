@@ -1,289 +1,173 @@
-let flag = 0;
-window.onload = function () {
-    const ap = JSON.parse(sessionStorage.getItem("ap"));
-    if (ap.status.signout === "正在使用中") {//签退,暂离
-        ap.status = "正在使用中";
-        flag = 0;
-    } else if (ap.status.signout === "已签退") {//
-        ap.status = "此次预约已完成";
-        flag = 2;
+const ap = JSON.parse(sessionStorage.getItem("ap"));//从sessionStorage读出这个预约的信息
+$("#cancel").on("click", function () {
+    weiAlert(0, null, "确定要取消该预约吗", null);
+    $("#submit").attr("href", "javascript:submit('cancel');");
+});
+$("#sign").on("click", function () {
+    weiAlert(0, null, "请确认签到,开始使用座位", null);
+    $("#submit").attr("href", "javascript:submit('sign');");
+});
+$("#quit").on("click", function () {
+    weiAlert(0, null, "确定要签退吗", null);
+    $("#submit").attr("href", "javascript:submit('quit');");
+});
+$("#leave").on("click", function () {
+    weiAlert(0, null, "确定要设定暂离吗,系统将为你保留半小时的使用权", null);
+    $("#submit").attr("href", "javascript:submit('leave');");
+});
+$("#delLeave").on("click", function () {
+    weiAlert(0, null, "请确认取消暂离,继续使用座位", null);
+    $("#submit").attr("href", "javascript:submit('delLeave');");
+});
+$("#delete").on("click", function () {
+    if ($("#reason").val().trim().length === 0) {
+        weiAlert(1, "warn", "请填写取消原因", "cancel");
+        return;
     }
-    else if (ap.status.signin === "未到达") {//签退
-        ap.status = "请按时前往教室签到";
-        flag = 3;
+    weiAlert(0, null, "请确认取消暂离,继续使用座位", null);
+});
+$(function () {
+    if (document.title === "座位预约详情") {
+        switch (ap.status.signout) {
+            case "未到签到时间":
+                ap.title = "还未到达可签到时间";
+                $(".cancel").show();
+                break;
+            case "请及时前往签到":
+                ap.title = "请按时前往教室签到";
+                $(".cancel").show();
+                $(".sign").show();
+                break;
+            case "正在使用中":
+                $.ajax({
+                    async: false,
+                    type: "get",
+                    url: "https://seat.api.hduapp.com/seat/tempLeave/add",
+                    xhrFields: {
+                        withCredentials: true,
+                    },
+                    // headers: { staffID: 19270808 }, 
+                    data: {
+                        seatID: ap.seatID
+                    },
+                    success: (response) => {
+                        if (response.data.usedRecord.recordID) {
+                            ap.title = "暂时离开中";
+                            $(".delLeave").show();
+                        }
+                    },
+                    error: (err) => {
+                        if (err.responseJSON.error === 40402) {
+                            ap.title = "正在使用中";
+                            $(".leave").show();
+                            return;
+                        }
+                        errHandle(1, err, null, "reload")
+                    }
+                });
+                break;
+            case "可以进行签退":
+                ap.title = "预约即将结束,请记得签退";
+                $(".quit").show();
+                break;
+            case "已签退":
+                ap.title = "此次预约已完成";
+                break;
+            case "未及时到达座位":
+                ap.title = "此次预约违约";
+                break;
+            case "已取消":
+                ap.title = ap.stateComment;
+                break;
+        }
+        $("#ap-seat h5").text(ap.seatName);
+        $(".ap-date h5").text(ap.startDate.split(" ")[0]);
     }
-    else if (ap.status.signin === "未及时到达座位") {//
-        ap.status = "此次预约违约";
-        flag = 2;
+    else if (document.title === "教室预约详情") {
+        switch (ap.status.signin) {
+            case "待审批":
+                ap.title = "等待管理员审批";
+                $(".delete").show();
+                $("#reason_label").show();
+                break;
+            case "通过":
+                ap.title = "管理员已通过";
+                break;
+            case "拒绝":
+                $(".ap-refuse").show();
+                ap.title = "已被管理员拒绝";
+                break;
+            case "已取消":
+                ap.title = "预约已取消";
+        }
+        $("#ap-num h5").text(ap.num);
+        $("#ap-phone h5").text(ap.phone);
+        $("#ap-reason h5").text(ap.reason);
+        $("#ap-refuse h5").text(ap.refuse);
     }
-    else if (ap.status.signin === "占座失败") {//
-        ap.status = "占座失败";
-        flag = 2;
-    }
-    else if (ap.status.signout === "暂时离开中") {//签退
-        ap.status = "暂时离开中";
-        flag = 1;
-    }
-    else if (ap.status.signin === "待审批") {
-        ap.status = "待审批";
-        flag = 2;
-    }
-    else if (ap.status.signin === "通过") {
-        ap.status = "已通过";
-        flag = 2;
-    }
-    else if (ap.status.signin === "拒绝") {
-        ap.status = "已拒绝";
-        flag = 2;
-    }
-    else if (ap.status.signin === "已取消") {
-        ap.status = "预约已取消";
-        flag = 3;
-    }
-    ap.seat = ap.set;
-    Gender(ap);
-};
-
-function Gender(ap) {
-    $(".content").html(template("apInfo-tpl", ap));
-    if (flag === 1) {
-        $(".leave").hide();
-        $("#quit").on("click", function () {
-            $('.weui-mask').show();
-            $(".weui-dialog__bd").eq(0).attr('id', 'quitSub')
-            $(".weui-dialog__bd").eq(0).html("确定要签退吗")
-            $(".weui-dialog").eq(0).show(300);
-        });
-    }
-    else if (flag === 2) {
-        $(".leave").hide();
-        $(".quit").hide();
-        $("#cancel").on("click", function () {
-            $('.weui-mask').show();
-            $(".weui-dialog__bd").eq(0).attr('id', 'cancelRoom')
-            $(".weui-dialog__bd").eq(0).html("确定要取消该预约吗")
-            $(".weui-dialog").eq(0).show(300);
-        });
-    }
-    else if (flag === 0) {
-        $("#leave").html('<img src="images/leave.svg">我要暂离');
-        $("#leave").on("click", function () {
-            $('.weui-mask').show();
-            $(".weui-dialog__bd").eq(0).attr('id', 'leaveSub')
-            $(".weui-dialog__bd").eq(0).html("确定要设定暂离吗,系统将为你保留半小时的使用权")
-            $(".weui-dialog").eq(0).show(300);
-        });
-        $("#quit").on("click", function () {
-            $('.weui-mask').show();
-            $(".weui-dialog__bd").eq(0).attr('id', 'quitSub')
-            $(".weui-dialog__bd").eq(0).html("确定要签退吗")
-            $(".weui-dialog").eq(0).show(300);
-        });
-    }
-    else if (flag === 3) {
-        // $("#quit").html('<img src="images/cancel.svg">取消预约');
-        $("#quit").hide();
-        $(".cancel").hide();
-        $(".leave").hide();
-        $(".sign").show();
-        $("#sign").on("click", function () {
-            $('.weui-mask').show();
-            $(".weui-dialog__bd").eq(0).attr('id', 'signSub')
-            $(".weui-dialog__bd").eq(0).html("请确认签到,开始使用座位")
-            $(".weui-dialog").eq(0).show(300);
-        });
-        // $("#quit").on("click", function () {
-        //     $('.weui-mask').show();
-        //     $(".weui-dialog__bd").eq(0).attr('id', 'cancelSeat')
-        //     $(".weui-dialog__bd").eq(0).html("确定要取消该预约吗")
-        //     $(".weui-dialog").eq(0).show(300);
-        // });
-    }
-}
-function submit() {
+    $(".ap-status h4").text("• " + ap.title);
+    $("#ap-room h5").text(ap.roomName);
+    $("#ap-state h5").text(ap.state);
+    $("#ap-start-time h5").text(ap.startDate.split(" ")[1] + ":00");
+    $("#ap-end-time h5").text(ap.endDate.split(" ")[1] + ":00");
+});
+function submit(id) {
     $('.weui-mask').hide();
     $(".weui-dialog").eq(0).hide();
-    if ($(".weui-dialog__bd").eq(0).attr('id') === 'leaveSub') {
-        $.ajax({
-            type: "get",
-            url: "https://seat.api.hduapp.com/set/act/action",
-            data: {
-                setId: JSON.parse(sessionStorage.getItem('ap')).setId,
-                action: "leaveTransient"
-            },
-            xhrFields: {
-                withCredentials: true,
-            },
-            contentType: "application/x-www-form-urlencoded",
-            success: function (response) {
-                $('.weui-mask').show();
-                if(response === ""){
-                    $(".weui-dialog__bd").eq(1).html('<p id = "0"><i class="weui-icon-success weui-icon_msg"></i> 签到成功</p>');
-                    $(".weui-dialog").eq(1).show(300);
-                    return
-                }
-                const res = JSON.parse(response)
-                if (res.status === 'leave') {
-                    $(".weui-dialog__bd").eq(1).html('<p id = "0"><i class="weui-icon-success weui-icon_msg"></i> 暂离成功!</p>');
-                    $(".weui-dialog").eq(1).show(300);
-                }
-                else if (res.status === 'update leave failed') {
-                    $(".weui-dialog__bd").eq(1).html('<p id = "1"><i class="weui-icon-warn weui-icon_msg"></i> 暂离失败,请重试</p>');
-                    $(".weui-dialog").eq(1).show(300);
-                } else {
-                    $(".weui-dialog__bd").eq(1).html('<p id = "0"><i class="weui-icon-success weui-icon_msg"></i> 暂离成功!</p>');
-                    $(".weui-dialog").eq(1).show(300);
-                }
-            },
-            error: function (xhr) {
-                $('.weui-mask').show();
-                $(".weui-dialog__bd").html('<p id = "1"><i class="weui-icon-warn weui-icon_msg"></i> 发生错误，请稍候刷新再试，或联系管理员</p>');
-                $(".weui-dialog").eq(1).show(300);
-            }
-        });
-    }
-    else if ($(".weui-dialog__bd").eq(0).attr('id') === 'quitSub') {
-        $.ajax({
-            type: "get",
-            url: "https://seat.api.hduapp.com/set/act/action",
-            data: {
-                setId: JSON.parse(sessionStorage.getItem('ap')).setId,
-                action: "leave"
-            },
-            xhrFields: {
-                withCredentials: true,
-            },
-            contentType: "application/x-www-form-urlencoded",
-            success: function (response) {
-                $('.weui-mask').show();
-                $(".weui-dialog__bd").eq(1).html('<p id = "0"><i class="weui-icon-success weui-icon_msg"></i> 签退成功</p>');
-                $(".weui-dialog").eq(1).show(300);
-            },
-            error: function (xhr) {
-                $('.weui-mask').show();
-                $(".weui-dialog__bd").html('<p id = "1"><i class="weui-icon-warn weui-icon_msg"></i> 发生错误，请稍候刷新再试，或联系管理员</p>');
-                $(".weui-dialog").eq(1).show(300);
-            }
-        });
-    }
-    else if ($(".weui-dialog__bd").eq(0).attr('id') === 'signSub') {
-        $.ajax({
-            type: "get",
-            url: "https://seat.api.hduapp.com/set/act/action",
-            data: {
-                setId: JSON.parse(sessionStorage.getItem('ap')).setId,
-                action: "sign"
-            },
-            xhrFields: {
-                withCredentials: true,
-            },
-            contentType: "application/x-www-form-urlencoded",
-            success: function (response) {
-                $('.weui-mask').show();
-                if(response === ""){
-                    $(".weui-dialog__bd").eq(1).html('<p id = "0"><i class="weui-icon-success weui-icon_msg"></i> 签到成功</p>');
-                    $(".weui-dialog").eq(1).show(300);
-                    return
-                }
-                const res = JSON.parse(response)
-                if (res.status === 'sign has been cancel') {
-                    $(".weui-dialog__bd").eq(1).html('<p id = "0"><i class="weui-icon-success weui-icon_msg"></i> 签到成功</p>');
-                    $(".weui-dialog").eq(1).show(300);
-                }
-                else if (res.status === 'sign failed') {
-                    $(".weui-dialog__bd").eq(1).html('<p id = "1"><i class="weui-icon-warn weui-icon_msg"></i> 签到失败,请重试</p>');
-                    $(".weui-dialog").eq(1).show(300);
-                }
-                else if (res.status === 'not time to sign') {
-                    $(".weui-dialog__bd").eq(1).html('<p id = "1"><i class="weui-icon-warn weui-icon_msg"></i> 未到签到时间,座位开始使用前5分钟开放签到</p>');
-                    $(".weui-dialog").eq(1).show(300);
-                } 
-            },
-            error: function (xhr) {
-                $('.weui-mask').show();
-                $(".weui-dialog__bd").html('<p id = "1"><i class="weui-icon-warn weui-icon_msg"></i> 发生错误，请稍候刷新再试，或联系管理员</p>');
-                $(".weui-dialog").eq(1).show(300);
-            }
-        });
-    }
-    else if ($(".weui-dialog__bd").eq(0).attr('id') === 'cancelSeat') {
-        $.ajax({
-            type: "get",
-            url: "https://seat.api.hduapp.com/set/act/action",
-            data: {
-                setId: JSON.parse(sessionStorage.getItem('ap')).setId,
-                action: "4"
-            },
-            xhrFields: {
-                withCredentials: true,
-            },
-            contentType: "application/x-www-form-urlencoded",
-            success: function (response) {
-                $('.weui-mask').show();
-                $(".weui-dialog__bd").eq(1).html('<p id = "0"><i class="weui-icon-success weui-icon_msg"></i> 取消成功</p>');
-                $(".weui-dialog").eq(1).show(300);
-            },
-            error: function (xhr) {
-                $('.weui-mask').show();
-                $(".weui-dialog__bd").html('<p id = "1"><i class="weui-icon-warn weui-icon_msg"></i> 发生错误，请稍候刷新再试，或联系管理员</p>');
-                $(".weui-dialog").eq(1).show(300);
-            }
-        });
-    }
-    else if ($(".weui-dialog__bd").eq(0).attr('id') === 'cancelRoom') {
-        $.ajax({
-            type: "get",
-            //新接口测试
-            url: "https://seat.api.hduapp.com/room/apply/user/cancel",
-            data: {
-                applyId: JSON.parse(sessionStorage.getItem("ap")).applyId
-            },
-            xhrFields: {
-                withCredentials: true,
-            },
-            contentType: "application/x-www-form-urlencoded",
-            success: function (response) {
-                $('.weui-mask').show();
-                if(response === ""){
-                    $(".weui-dialog__bd").eq(1).html('<p id = "0"><i class="weui-icon-success weui-icon_msg"></i> 取消成功</p>');
-                    $(".weui-dialog").eq(1).show(300);
-                    return
-                }
-                const res = JSON.parse(response)
-                if (res.status === 'cancel successful') {
-                    $(".weui-dialog__bd").eq(1).html('<p id = "0"><i class="weui-icon-success weui-icon_msg"></i> 取消成功!</p>');
-                    $(".weui-dialog").eq(1).show(300);
-                }
-                else if (res.status === 'cancel failed') {
-                    $(".weui-dialog__bd").eq(1).html('<p id = "1"><i class="weui-icon-warn weui-icon_msg"></i> 取消失败,请重试</p>');
-                    $(".weui-dialog").eq(1).show(300);
-                }
-                else if (res.status === 'parameters are null') {
-                    $(".weui-dialog__bd").eq(1).html('<p id = "1"><i class="weui-icon-warn weui-icon_msg"></i> 缺少参数,请重试</p>');
-                    $(".weui-dialog").eq(1).show(300);
-                } else {
-                    $(".weui-dialog__bd").eq(1).html('<p id = "0"><i class="weui-icon-success weui-icon_msg"></i> 取消成功!</p>');
-                    $(".weui-dialog").eq(1).show(300);
-                }
-            },
-            error: function (xhr) {
-                $('.weui-mask').show();
-                $(".weui-dialog__bd").eq(1).html('<p id = "1"><i class="weui-icon-warn weui-icon_msg"></i> 发生错误，请稍候刷新再试，或联系管理员</p>');
-                $(".weui-dialog").eq(1).show(300);
-            }
-        });
-    }
-}
-function cancel() {
-    $('.weui-mask').hide();
-    $(".weui-dialog").hide();
-}
-function redirect() {
-    switch ($(".weui-dialog__bd").eq(1).children("p").eq(0).attr('id')) {
-        case '0':
-            window.location.href = 'index.html#/myAp'
+    var type = "put";
+    var url = "";
+    var text = "";
+    var data = "";
+    switch (id) {
+        case "cancel":
+            url = "/seat/apply/cancel";
+            text = "预约取消成功!";
+            data = JSON.stringify({
+                "applyID": ap.applyID
+            })
             break;
-        default:
-            location.reload();
+        case "sign":
+            url = "/seat/used/signIn?seatID=" + ap.seatID;
+            text = "签到成功!请开始使用您的座位";
+            break;
+        case "leave":
+            url = "/seat/tempLeave/add?seatID=" + ap.seatID;
+            text = "暂离设置成功,系统将为你保留半小时的使用权";
+            type = "post";
+            break;
+        case "delLeave":
+            url = "/seat/tempLeave/delete?seatID=" + ap.seatID;
+            text = "暂离删除成功,请继续使用您的座位";
+            type = "delete";
+            break;
+        case "quit":
+            url = "/seat/used/signOut?seatID=" + ap.seatID;
+            text = "签退成功!";
+            break;
+        case "delete":
+            url = "/room/apply/delete";
+            text = "预约取消成功!";
+            type = "delete";
+            data = JSON.stringify({
+                "applyID": ap.applyID,
+                "comment": $("#reason").val()
+            })
+            break;
     }
+    $.ajax({
+        type,
+        url: "https://seat.api.hduapp.com" + url,
+        xhrFields: {
+            withCredentials: true,
+        },
+        data,
+        // headers: { staffID: 19270808 },
+        contentType: "application/json",
+        success: (response) => {
+            weiAlert(1, "success", text, "redirect", sessionStorage.getItem('sr_Turned') !== null ? "index.html?turned=true#/myAp" : "index.html#/myAp")
+        },
+        error: (xhr) => {
+            errHandle(1, xhr, null, "reload")
+        }
+    })
 }

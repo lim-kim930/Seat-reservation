@@ -6,6 +6,7 @@ var outputContainer = document.getElementById("output");
 var outputMessage = document.getElementById("outputMessage");
 var outputData = document.getElementById("outputData");
 var info = {}
+var seatID = ""
 const dateUsed = location.search.substr(6);
 
 function drawLine(begin, end, color) {
@@ -17,12 +18,29 @@ function drawLine(begin, end, color) {
     canvas.stroke();
 }
 
+if (navigator.mediaDevices.getUserMedia === undefined) {
+    navigator.mediaDevices.getUserMedia = function (constraints) {
+        var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia || navigator.oGetUserMedia;
+        if (!getUserMedia) {
+            return Promise.reject(new Error('getUserMedia is not implemented in this browser'));
+        }
+        return new Promise(function (resolve, reject) {
+            getUserMedia.call(navigator, constraints, resolve, reject);
+        });
+    }
+}
 // Use facingMode: environment to attemt to get the front camera on phones
 navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } }).then(function (stream) {
     video.srcObject = stream;
     video.setAttribute("playsinline", true); // required to tell iOS safari we don't want fullscreen
     video.play();
     requestAnimationFrame(tick);
+}).catch(function (err) {
+    alert(err)
+    $("#dialog-title").text("提示");
+    $(".weui-dialog__bd").eq(1).text('当前浏览器不支持getUserMedia,请更换浏览器重试');
+    $('.weui-mask').show();
+    $(".weui-dialog").eq(1).show(200);
 });
 
 function tick() {
@@ -49,21 +67,20 @@ function tick() {
             outputData.parentElement.hidden = false;
             document.getElementById("success").play();
             setTimeout(() => {
-                // alert(code.data);
-                info.room = decodeURI(code.data.substring(31, 45))
-                info.seat = code.data.substring(51, 53)
-                console.log(info.room);
-                if(info.room === ""||info.seat === ""){
-                    $("#dialog-title").text("提示");
-                    $(".weui-dialog__bd").eq(0).text('二维码错误,请检查后重试');
-                    $('.weui-mask').show();
-                    $(".weui-dialog").eq(0).show(300);
-                }
-                else {
+                info.room = JSON.parse(code.data).room
+                info.seat = JSON.parse(code.data).seat
+                seatID = info.room.split("教")[0] + "-" + info.room.split("教")[1] + "-seat" + info.seat;
+                if (info.room && info.seat) {
                     $("#dialog-title").text("为你找到以下座位信息:");
                     $(".weui-dialog__bd").eq(0).html('<p style="font-size: 18px;">教室: ' + info.room + ' 座位: ' + info.seat + '号</p><p style="font-size: 18px;">请仔细核对,并点击确定提交预约</p>');
                     $('.weui-mask').show();
-                    $(".weui-dialog").eq(0).show(300);
+                    $(".weui-dialog").eq(0).show(200);
+                }
+                else {
+                    $("#dialog-title").text("提示");
+                    $(".weui-dialog__bd").eq(1).text('二维码错误,请检查后重试');
+                    $('.weui-mask').show();
+                    $(".weui-dialog").eq(1).show(200);
                 }
             }, 500);
             return;
@@ -77,60 +94,12 @@ function tick() {
 function apsubmit() {
     $('.weui-mask').hide();
     $(".weui-dialog").eq(0).hide();
-    $.ajax({
-        type: 'get',
-        url: 'https://seat.api.hduapp.com/set/act/scan',
-        data: {
-            roomName: info.room,
-            dateUsed,
-            setName: info.seat,
-        },
-        xhrFields: {
-            withCredentials: true,
-        },
-        contentType: "application/x-www-form-urlencoded",
-        // 请求成功以后函数被调用
-        success: function (response) {
-            sessionStorage.setItem("qrInfo", JSON.stringify({
-                dateUsed,
-                roomName: info.room,
-                setName: info.seat,
-                status: JSON.parse(response).status
-            }))
-            window.location.href = "qrSelect.html"
-            // case 'successfully':
-            //     $(".weui-dialog__bd").eq(1).html('<p id = "0"><i class="weui-icon-success weui-icon_msg"></i> 预约成功,请按时签到使用</p>');
-            //     $(".weui-dialog").eq(1).show(300);
-            //     break
-            // case 'the person this position comes back':
-            //     $(".weui-dialog__bd").eq(1).html('<p id = "1"><i class="weui-icon-success weui-icon_msg"></i> 欢迎回来,暂离结束</p>');
-            //     $(".weui-dialog").eq(1).show(300);
-            //     break
-            // case 'you already applied':
-            //     $(".weui-dialog__bd").eq(1).html('<p id = "1"><i class="weui-icon-warn weui-icon_msg"></i> 你已经有已提交的预约,请勿重复申请</p>');
-            // $(".weui-dialog").eq(1).show(300);
-            //     break
-            // case 'this position has person,please wait 15 min':
-            //     $(".weui-dialog__bd").eq(1).html('<p id = "1"><i class="weui-icon-warn weui-icon_msg"></i> 此座位已经有人，等待15分钟吧!</p>');
-            //     $(".weui-dialog").eq(1).show(300);
-            //     break
-            // default:
-            //     $(".weui-dialog__bd").eq(1).html('<p id = "1"><i class="weui-icon-warn weui-icon_msg"></i> 缺少参数,请核对后申请</p>');
-            //     $(".weui-dialog").eq(1).show(300);
-            //     break
-        },
-        error: function (xhr) {
-            $('.weui-mask').show();
-            $(".weui-dialog__bd").html('<p><i class="weui-icon-warn weui-icon_msg"></i> 发生错误，请稍候刷新再试，或联系管理员</p>');
-            $(".weui-dialog").eq(1).show(300);
-        }
-    })
-}
-function cancel() {
-    $('.weui-mask').hide();
-    $(".weui-dialog").hide();
-    location.reload();
-}
-function redirect() {
-    location.reload();
+
+    sessionStorage.setItem("qrInfo", JSON.stringify({
+        dateUsed,
+        roomName: info.room,
+        setName: info.seat,
+        seatID: seatID
+    }))
+    window.location.href = "qrSelect.html"
 }

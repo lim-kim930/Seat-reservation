@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <link rel="stylesheet" href="css/roomList.css">
     <script src="js/jquery-3.5.1.js"></script>
-    <script src="js/rl-self-adaption.js"></script>
+    <script src="js/self-adaption.js"></script>
     <script src="js/template-web.js"></script>
-    <title>教室预约</title>
+    <title>教室列表</title>
 </head>
 
 <body>
@@ -37,9 +37,10 @@
 	</script>
     <script type="text/html" id="rs-tpl">
         {{each rOption}}
-        <div id="{{$value.name}}" onclick= "choosen(this)" ><h4>{{$value.name}}</h4><span><img src="images/logo1.png" alt=""> {{$value.capicity}}人</span></div>
+        <div id="{{$value.name}}" onclick= "choosen(this)" ><h4>{{$value.name.split("-")[0] +"教"+ $value.name.split("-")[1]}}</h4><span><img src="images/logo1.png" alt=""> {{$value.capacity}}人</span></div>
         {{/each}}
 	</script>
+    <script src="js/publicFunction.js"></script>
     <script src="js/roomList.js"></script>
     <script>
 

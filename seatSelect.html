@@ -5,24 +5,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-  <title>选择座位</title>
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="css/weui.css">
+  <link rel="stylesheet" href="css/weui.min.css">
   <link rel="stylesheet" type="text/css" href="css/seatSelect.css">
   <script src="js/jquery-3.5.1.js"></script>
+  <script src="js/self-adaption.js"></script>
   <script src="js/template-web.js"></script>
-  <script src="js/selectMultip.js"></script>
-  <script>
-    function windowHeight() {
-      var de = document.documentElement;
-      return self.innerHeight || (de && de.clientHeight) || document.body.clientHeight;
-    }
-    window.onpageshow = window.onresize = function () {
-      var wh = windowHeight();
-      if ($('.wrapper').height() < wh - 44)
-        $('.wrapper').height(wh - 44);
-    }
-  </script>
+  <title>选择座位</title>
 </head>
 
 <body>
@@ -40,20 +29,29 @@
           <div id="seat-info-container">
             <div>
               <span class="text-muted">当前选择座位: </span><span id="seatvalue" class="text-muted">未选择</span><span
-                class="input-warnning bg-danger"><img src="images/错误.svg">请选择</span>
+                class="input-warnning bg-danger"><img src="images/error.svg">请选择</span>
             </div>
           </div>
         </div>
         <h4 style="margin-top: 30px; text-indent: 5px;">选择你想使用的座位: </h4>
         <div id="seat-container">
-          <div id="seats"></div>
+          <div id="seats">
+          </div>
+          <div class="room_border">
+            <span class="door"></span>
+            <span class="door"></span>
+          </div>
         </div>
         <div class="using-time">
-          <span>使用时间</span><span><span id="using-time">请选择</span><img src="images/forward_gray.svg"></span>
-          <select id="time-option" multip>
-
+          <span>开始时间</span><span><span id="using-time">请选择</span><img src="images/forward_gray.svg"></span>
+          <select id="time-option">
           </select>
-      </div>
+        </div>
+        <div class="using-duration">
+          <span>使用时长</span><span><span id="using-duration">请选择</span><img src="images/forward_gray.svg"></span>
+          <select id="duration-option">
+          </select>
+        </div>
       </div>
     </div>
     <div class="start">
@@ -61,24 +59,40 @@
     </div>
   </div>
   <div class="weui-dialog">
-    <div class="weui-dialog__hd" style="font-size: 16px; line-height: 18px;"><i class="glyphicon glyphicon-question-sign" style="color: #f1924e; font-size: 16px; width: 16px; vertical-align: middle;"></i> 你即将预约:</div>
+    <div class="weui-dialog__hd" style="font-size: 16px; line-height: 18px;"><i
+        class="glyphicon glyphicon-question-sign"
+        style="color: #f1924e; font-size: 16px; width: 16px; vertical-align: middle;"></i> 你即将预约:</div>
     <div class="weui-dialog__bd"></div>
     <div class="weui-dialog__ft">
-      <a href="javascript:cancel();" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+      <a href="javascript:alertCallback('cancel');" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
       <a href="javascript:submit();" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
     </div>
   </div>
   <div class="weui-dialog">
     <div class="weui-dialog__bd"></div>
     <div class="weui-dialog__ft">
-      <a href="javascript:redirect()" class="weui-dialog__btn weui-dialog__btn_primary">我知道了</a>
+      <a href="" class="weui-dialog__btn weui-dialog__btn_primary">我知道了</a>
+    </div>
+  </div>
+  <div role="alert" class="loadingToast" style="display: none;">
+    <div class="weui-mask_transparent"></div>
+    <div class="weui-toast">
+      <span class="weui-primary-loading weui-icon_toast">
+        <span class="weui-primary-loading__dot"></span>
+      </span>
+      <p class="weui-toast__content">拼命加载中</p>
     </div>
   </div>
   <div class="weui-mask"></div>
-  <script type="text/html" id="seat-tpl">
-      {{each seats}}
-      <button data-value="{{$value}}" class="btn btn-info" style="outline: none;">{{$value}}</button>
+  <script type="text/html" id="time-tpl">
+      {{each tOption}}
+        <option value="{{$value.value}}">{{$value.text}}</option>
       {{/each}}
+  </script>
+  <script type="text/html" id="seat-tpl">
+    {{each totalSeat}}
+      <button data-value="{{$value.value}}" class="btn btn-info">{{$value.name}}</button>
+    {{/each}}
   </script>
   <script type="text/html" id="room-info-tpl">
       <div><span class="text-muted">日期:</span><span id="date" class="text-muted">&nbsp{{dateUsed}}</span></div>
@@ -86,20 +100,16 @@
   </script>
   <script type="text/html" id="seat-info-tpl">
     <div>
-      <span class="text-muted">当前选择座位:</span><span id="seatvalue" class="text-muted">&nbsp{{setName}}号</span>
+      <span class="text-muted">当前选择座位:</span><span id="seatvalue" class="text-muted">&nbsp{{name}}号</span>
     </div>
-    <div><span class="text-muted">该日不可预约小时段:</span><span id="dura" class="text-muted"></span></div>
+    <!-- <div><span class="text-muted">该日不可预约小时段:</span><span id="dura" class="text-muted"></span></div> -->
   </script>
   <script type="text/html" id="disable-tpl">
     {{each}}
       &nbsp{{$value}}:00
     {{/each}}
   </script>
-  <!-- <script type="text/html" id="time-tpl">
-    {{each tOption}}
-    <option value="{{$value}}">{{$value}}:00~{{$value + 1}}:00</option>
-    {{/each}}
-  </script> -->
+  <script src="js/publicFunction.js"></script>
   <script src="js/seatSelect.js"></script>
 </body>
 

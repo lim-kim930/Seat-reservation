@@ -1,199 +1,206 @@
-const pointer = $("#pointer");
-const seat_content = $("#seat-content");
-const room_content = $("#room-content");
-const seatBtn = $("#seat-btn");
-const roomBtn = $("#room-btn");
-let flag1 = 0;
-
-function seatSelect() {
-  if (flag1 === 1) {
+const seatBtn = $("#seat-btn");//座位选择按钮
+const roomBtn = $("#room-btn");//教室选择按钮
+const pointer = $("#pointer");//选择按钮下的横条指示
+const seat_content = $("#seat-content");//座位预约显示区域
+const room_content = $("#room-content");//教室预约显示区域
+let flag1 = 0;//指示条位置标识变量
+//切换函数
+function contentSwitch(id) {
+  var params = []//用数组存放css样式数值,简化代码
+  if (flag1 === 1 && id === "seat") {
     flag1 = 0;
-    pointer.css("left", 0 + "%");
-    seatBtn.css("color", "#3c27ff").css("fontWeight", "700");
-    roomBtn.css("color", "#a3a3a3").css("fontWeight", "400");
-    room_content.css("left", 100 + "%");
-    seat_content.css("left", 0);
-    lookup();
+    params = [0, "#3c27ff", "#a3a3a3", "700", "400", "100%", 0]
   }
-}
-function roomSelect() {
-  if (flag1 === 0) {
+  else if (flag1 === 0 && id === "room") {
     flag1 = 1;
-    pointer.css("left", 50 + "%");
-    roomBtn.css("color", "#3c27ff").css("fontWeight", "700");
-    seatBtn.css("color", "#a3a3a3").css("fontWeight", "400");
-    seat_content.css("left", -100 + "%");
-    room_content.css("left", 0);
-    lookup();
+    params = ["50%", "#a3a3a3", "#3c27ff", "400", "700", 0, "-100%"]
   }
+  else //在已经切换的状态再点击直接return
+    return;
+  pointer.css("left", params[0]);
+  seatBtn.css("color", params[1]).css("fontWeight", params[3]);
+  roomBtn.css("color", params[2]).css("fontWeight", params[4]);
+  seat_content.css("left", params[6]);
+  room_content.css("left", params[5]);
+  lookup();
 }
-function Gender(ap, apTimes) {
-  let container = "",
-    tpl = "";
-  if (flag1 === 0) {
-    container = "#seat-content";
-    tpl = "seat-tpl";
-  } else {
-    container = "#room-content";
-    tpl = "room-tpl";
-  }
-  $(container).html(template(tpl, { ap: ap }));
-  $("#statistic").html(template("statistic-tpl", apTimes));
-  $(".seat-info").on("click", function () {
-    sessionStorage.removeItem("ap");
-    sessionStorage.setItem("ap", JSON.stringify(ap[this.id]));
-    if (flag1 === 0) {
-      window.location.href = "seatAppointInfo.html";
-    } else {
-      window.location.href = "roomAppointInfo.html";
-    }
-  });
-}
+//获取预约信息
 function lookup() {
-  $('.warnning').hide();
+  $('.warnning').hide();//隐藏空结果提示
+  $(".loadingToast").hide();//隐藏加载
   let url = "";
-  if (flag1 === 0) {
-    $('.weui-loadmore').eq(0).show();
-    //新接口测试
-    url = "https://seat.api.hduapp.com/user/info/getsetinfo";
-  } else {
-    $('.weui-loadmore').eq(1).show();
-    //新接口测试
-    url = "https://seat.api.hduapp.com/user/info/getroominfo";
-  }
+  $(".loadingToast").eq(flag1).show();
+  if (flag1 === 0)
+    url = "https://seat.api.hduapp.com/seat/apply/listByUser";
+  else
+    url = "https://seat.api.hduapp.com/room/apply/listByUser";
   $.ajax({
     type: "get",
     url,
+    // data: {
+    //   staffID: 19270808
+    // },
     xhrFields: {
       withCredentials: true,
     },
-    contentType: "application/x-www-form-urlencoded",
+    // headers: { staffID: 19270808 },
     success: function (response) {
-      // response = JSON.stringify({ "status": { "7": { "dateUsed": "2021-8-8", "sLength": "8", "setId": 3, "state": 1, "roomName": "12?221" },
-      // "8": { "dateUsed": "2021-8-8", "sLength": "8,9", "setId": 6, "state": 2, "roomName": "12?221" } } })
-      const seats = Object.keys(JSON.parse(response).status)
-      response = Object.values(JSON.parse(response).status);
-      const apTimes = {
-        times: response.length,
+      //下面对拿到的数据进行整理,放到totalAp里进行渲染
+      var totalAp = [];
+      const data = response.data;
+      const len = data.length;
+      var apTimes = {
+        times: len,
         breach: 0,
       };
-      $('.weui-loadmore').hide();
-      if (response.length === 1 && (response[0].sLength === "" || (response[0].sLength === null))) {
-        $('.warnning').eq(flag1).show();
-        apTimes.times = 0;
-        $("#statistic").html(template("statistic-tpl", apTimes));
-        return false;
-      }
-      if (response.length === 0) {
+      $(".loadingToast").hide();
+      //如果没预约,直接渲染statistic然后return
+      if (len === 0) {
         $('.warnning').eq(flag1).show();
         $("#statistic").html(template("statistic-tpl", apTimes));
-        return false;
+        return;
       }
-      for (let i = 0; i < response.length; i++) {
-        if(response[i].sLength === undefined)
-          var dateList = response[i].rLength.split(",");
-        else
-          var dateList = response[i].sLength.split(",");
-        const startDate = dateList[0];
-        const endDate = Number(dateList[dateList.length - 1]) + 1;
-        response[i].startDate = startDate;
-        response[i].endDate = endDate;
-        response[i].setName = seats[i];
-        if(response[i].roomName.indexOf("?") != -1){
-          response[i].roomName = response[i].roomName.split("?")[0]+"教"+response[i].roomName.split("?")[1]
-        }
+      const sysTime = getSysTime().Systime2
+      for (let i = 0; i < len; i++) {
+        var status = {};
+        const start = new Date(data[i].startAt);
+        const end = new Date(data[i].endAt);
         if (flag1 === 0) {
-          switch (+response[i].state) {
-            case 0:
-              response[i].status = {
-                signin: "未到达",
-                signout: "",
-                signinClass: "unsinged",
-                signoutClass: "unsinged",
-              };
+          switch (data[i].state) {
+            case "AVAILABLE":
+              if (sysTime < data[i].startAt)
+                status = {
+                  signin: "未签到",
+                  signout: "未到签到时间",
+                  signinClass: "unsinged",
+                  signoutClass: "unsinged"
+                };
+              else if (sysTime >= data[i].startAt && sysTime <= data[i].startAt + 300000)//开始后5分钟内可以签到
+                status = {
+                  signin: "未签到",
+                  signout: "请及时前往签到",
+                  signinClass: "unsinged",
+                  signoutClass: "singed"
+                };
+              else if (sysTime <= data[i].endAt && sysTime >= data[i].endAt - 300000)//结束前5分钟内可以签退
+                status = {
+                  signin: "已签到",
+                  signout: "可以进行签退",
+                  signinClass: "singed",
+                  signoutClass: "singed"
+                };
               break;
-            case 1:
-              response[i].status = {
+            case "NORMAL_SIGN_IN":
+              status = {
                 signin: "已签到",
                 signout: "正在使用中",
                 signinClass: "singed",
-                signoutClass: "singed",
+                signoutClass: "singed"
               };
               break;
-            case 2:
-              response[i].status = {
-                signin: "已签到",
-                signout: "暂时离开中",
-                signinClass: "singed",
-                signoutClass: "singed",
-              };
-              break;
-            case 3:
-              response[i].status = {
-                signin: "占座失败",
-                signout: "",
-                signinClass: "breached",
-                signoutClass: "breached",
-              };
-              apTimes.breach++;
-              break;
-            case 4:
-              response[i].status = {
-                signin: "已签到",
+            case "NORMAL_SIGN_OUT":
+              status = {
+                signin: "",
                 signout: "已签退",
-                signinClass: "singed",
-                signoutClass: "singed",
-              };
-              break;
-            case 5:
-              response[i].status = {
-                signin: "未及时到达座位",
-                signout: "",
-                signinClass: "breached",
-                signoutClass: "breached",
-              };
-              apTimes.breach++;
-              break;
-          }
-        } else {
-          switch (+response[i].applyState) {
-            case 0:
-              response[i].status = {
-                signin: "待审批",
                 signinClass: "unsinged",
+                signoutClass: "unsinged"
               };
               break;
-            case 1:
-              response[i].status = {
-                signin: "通过",
-                signinClass: "singed",
-              };
-              break;
-            case 2:
-              response[i].status = {
-                signin: "拒绝",
+            case "UNSIGNIN_EXPIRED":
+              apTimes.breach++;
+              status = {
+                signin: "未签到",
+                signout: "未及时到达座位",
                 signinClass: "breached",
+                signoutClass: "breached"
               };
               break;
-            case 3:
-                response[i].status = {
-                  signin: "已取消",
-                  signinClass: "breached",
-                };
-                break;
+            case "CANCELED":
+              status = {
+                signin: "",
+                signout: "已取消",
+                signinClass: "unsinged",
+                signoutClass: "unsinged"
+              };
+              break;
           }
+          //将信息都push到totalAp里
+          totalAp.push({
+            startDate: start.getFullYear() + "/" + (start.getMonth() + 1) + "/" + start.getDate() + " " + start.getHours(),
+            endDate: end.getFullYear() + "/" + (end.getMonth() + 1) + "/" + end.getDate() + " " + end.getHours(),
+            roomName: data[i].seat.belongToRoomID.split("-")[0] + "教" + data[i].seat.belongToRoomID.split("-")[1],
+            seatName: data[i].seat.seatName.substr(4),
+            state: data[i].seat.stateComment,
+            applyID: data[i].applyID,
+            seatID: data[i].seat.seatID,
+            stateComment: data[i].stateComment,
+            status
+          })
+        }
+        else {
+          var refuse = "";
+          switch (data[i].state) {
+            case "WAITING":
+              status = {
+                signin: "待审批",
+                signinClass: "unsinged"
+              };
+              break;
+            case "ACCEPTED":
+              status = {
+                signin: "通过",
+                signinClass: "singed"
+              };
+              break;
+            case "REFUSED":
+              refuse = data[i].reviewComment;
+              status = {
+                signin: "拒绝",
+                signinClass: "breached"
+              };
+              break;
+            case "CANCELED":
+              status = {
+                signin: "已取消",
+                signinClass: "unsigned"
+              };
+              break;
+          }
+          //将信息都push到totalAp里
+          totalAp.push({
+            startDate: start.getFullYear() + "/" + (start.getMonth() + 1) + "/" + start.getDate() + " " + start.getHours(),
+            endDate: end.getFullYear() + "/" + (end.getMonth() + 1) + "/" + end.getDate() + " " + end.getHours(),
+            roomName: data[i].room.roomID.split("-")[0] + "教" + data[i].room.roomID.split("-")[1],
+            reason: data[i].reason,
+            num: data[i].useManCount,
+            phone: data[i].applierPhone,
+            state: data[i].room.stateComment,
+            applyID: data[i].applyID,
+            refuse: refuse,
+            status
+          })
         }
       }
-      console.log(response);
-      console.log(apTimes);
-      Gender(response, apTimes);
+      //去渲染
+      Gender(totalAp, apTimes);
     },
-    error: function (err) {
-      if (confirm("出错啦,请重新登录后重试或联系管理员"))
-        window.location.href = "https://seat.api.hduapp.com/request";
+    error: (err) => {
+      $(".loadingToast").hide();
+      errHandle(0, err, "预约", "reload")
     }
   });
 }
-function formatDate(date) {
-  return date + "时";
+function Gender(ap, apTimes) {
+  //根据flag来确定渲染到哪一个content上
+  let container = "", tpl = "";
+  container = flag1 === 0 ? "#seat-content" : "#room-content";
+  tpl = flag1 === 0 ? "seat-tpl" : "room-tpl";
+  $(container).html(template(tpl, { ap }));
+  $("#statistic").html(template(flag1 === 0 ? "statistic-tpl" : "statistic-tpl-room", apTimes));
+  //点击查看预约详情
+  $(".seat-info").on("click", function () {
+    sessionStorage.removeItem("ap");
+    sessionStorage.setItem("ap", JSON.stringify(ap[this.id]));
+    window.location.href = flag1 === 0 ? "seatAppointInfo.html" : "roomAppointInfo.html";
+  });
 }

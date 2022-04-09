@@ -97,6 +97,31 @@ a:hover{
     height: 50px;
     opacity: 0;
 }
+.using-time,
+.using-duration {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    width: 100%;
+    height: 50px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+.using-duration {
+    margin-bottom: 80px;
+}
+.using-time span,
+.using-duration span {
+    margin: 0 10px;
+    font-size: 14px;
+    overflow: hidden;
+}
+.using-time img {
+    width: 17px;
+    margin-right: 1px;
+}
 .start {
     position: fixed;
     display: flex;

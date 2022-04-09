@@ -146,3 +146,15 @@ a:hover{
     font-size: large;
     margin-top: 320px;
 }
+.weui-dialog,
+.weui-mask {
+    display: none;
+}
+.weui-dialog__bd p {
+    font-size: 20px;
+}
+.weui-dialog__bd p i {
+    width: 21px;
+    height: 21px;
+    margin-top: -3px;
+}

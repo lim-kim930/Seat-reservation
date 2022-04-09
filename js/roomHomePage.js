@@ -5,7 +5,7 @@ $('#using-pn').on('change', numberCheck);
 $('#using-reason').on('change', reasonCheck);
 $('#using-tel').on('change', telCheck);
 function numberCheck() {
-    var limit = Number($("#capicity").text().split("人")[0].substr(4));
+    var limit = Number($("#capacity").text().split("人")[0].substr(4));
     var regu = [];
     for (var i = 1; i <= limit; i++)
         regu.push(i)
@@ -62,10 +62,10 @@ $('.room-start').on('click', function () {
     reasonCheck();
     // lengthCheck();
     telCheck();
-    if (testFlag1 === 1 && testFlag2 === 1 && testFlag3 === 1 ) {
+    if (testFlag1 === 1 && testFlag2 === 1 && testFlag3 === 1) {
         $(".weui-dialog__bd").eq(0).html('<p style="font-size: 18px;">教室: ' + roomName + '</p><p style="font-size: 18px;">请仔细核对,并点击确定提交预约</p>');
         $('.weui-mask').show();
-        $(".weui-dialog").eq(0).show(300);
+        $(".weui-dialog").eq(0).show(200);
     }
 });
 function choosen(e) {

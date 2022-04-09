@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-    <link rel="stylesheet" href="css/weui.css">
+    <link rel="stylesheet" href="css/weui.min.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/appointtInfo.css">
     <script src="js/jquery-3.5.1.js"></script>
-    <script src="js/ap-self-adaption.js"></script>
+    <script src="js/self-adaption.js"></script>
     <script src="js/template-web.js"></script>
-    <title>预约详情</title>
+    <title>教室预约详情</title>
 </head>
 
 <body>
@@ -21,33 +21,49 @@
         <span>预约详情</span>
     </div>
     <!-- 主体 -->
-    <div class="content"></div>
-    <script type="text/html" id="apInfo-tpl">
-        <div class="ap-status text-muted"><h4>• {{status}}</h4></div>
+    <div class="content">
+        <div class="ap-status text-muted"><h4></h4></div>
         <div id="ap">
             <div class="ap-info">
                 <div class="ap-room">
                     <span><h4>教室:</h4></span>
-                    <span class="text-muted" id="ap-room"><h5>{{roomName}}</h5></span>
+                    <span class="text-muted" id="ap-room"><h5></h5></span>
+                </div>
+                <div class="ap-state">
+                    <span><h4>教室状态:</h4></span>
+                    <span class="text-muted" id="ap-state"><h5></h5></span>
                 </div>
                 <div class="ap-seat">
                     <span><h4>使用人数:</h4></span>
-                    <span class="text-muted" id="ap-seat"><h5>{{num}}</h5></span>
+                    <span class="text-muted" id="ap-num"><h5></h5></span>
+                </div>
+                <div class="ap-phone">
+                    <span><h4>联系电话:</h4></span>
+                    <span class="text-muted" id="ap-phone"><h5></h5></span>
                 </div>
                 <div class="ap-start-time">
                     <span><h4>开始时间:</h4></span>
-                    <span class="text-muted" id="ap-start-time"><h5>{{startDate}}:00</h5></span>
+                    <span class="text-muted" id="ap-start-time"><h5></h5></span>
                 </div>
                 <div class="ap-end-time">
                     <span><h4>结束时间:</h4></span>
-                    <span class="text-muted" id="ap-end-time"><h5>{{endDate}}:00</h5></span>
+                    <span class="text-muted" id="ap-end-time"><h5></h5></span>
                 </div>
                 <div class="ap-reason" style="width: 100%;">
                     <span><h4>申请理由:</h4></span>
-                    <span class="text-muted" id="ap-reason"><h5 style="height: 50px; overflow: auto;">{{applyReason}}</h5></span>
+                    <span class="text-muted" id="ap-reason"><h5 style="height: 50px; overflow: auto;"></h5></span>
                 </div>
-                <div class="cancel" style="margin: 70px 0 0 calc(50% - 75px);">
-                    <button type="button" class="btn" id="cancel"><img src="images/cancel.svg">取消预约</button>
+                <div class="ap-refuse" style="width: 100%;">
+                    <span><h4>拒绝批语:</h4></span>
+                    <span class="text-muted" id="ap-refuse"><h5 style="height: 50px; overflow: auto;"></h5></span>
+                </div>
+                <label id="reason_label" class="weui-cell weui-cell_active">
+                    <div class="weui-cell__bd reason" style="height: 30px;">
+                        <input id="reason" class="weui-input" placeholder="请填写取消原因">
+                    </div>
+                </label>
+                <div class="delete" style="margin-left: calc(50% - 75px);">
+                    <button type="button" class="btn" id="delete"><img src="images/cancel.svg">取消预约</button>
                 </div>
             </div>
         </div>
@@ -55,18 +71,19 @@
             <div class="weui-dialog__hd" style="font-size: 16px; line-height: 18px;"><i class="glyphicon glyphicon-question-sign" style="color: #f1924e; font-size: 16px; width: 16px; vertical-align: middle;"></i> 提示</div>
             <div class="weui-dialog__bd"></div>
             <div class="weui-dialog__ft">
-              <a href="javascript:cancel();" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
-              <a href="javascript:submit();" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
+              <a href="javascript:alertCallback('cancel');" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+              <a href="javascript:submit('delete');" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
             </div>
         </div>
         <div class="weui-dialog">
             <div class="weui-dialog__bd"></div>
             <div class="weui-dialog__ft">
-              <a href="javascript:redirect()" class="weui-dialog__btn weui-dialog__btn_primary">我知道了</a>
+              <a href="" class="weui-dialog__btn weui-dialog__btn_primary">我知道了</a>
             </div>
         </div>
         <div class="weui-mask"></div>
-    </script>
+    </div>
+    <script src="js/publicFunction.js"></script>
     <script src="js/appointInfo.js"></script>
 </body>
 

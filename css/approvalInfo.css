@@ -48,6 +48,7 @@ h5 {
     background-color: #f5f7f7;
 }
 .ap-info {
+    margin: 10px 0;
     padding: 30px;
     width: 95%;
     background-color: #fff;
@@ -64,7 +65,8 @@ h5 {
     width: 50%;
     height: 60px;
 }
-#ap-reason {
+#ap-reason,
+#ap-refuse {
     width: 100%;
     padding: 0;
     height: 50px;
@@ -93,9 +95,15 @@ button {
 #ap-uname,
 #ap-uno,
 #ap-start-time,
+#ap-end-time,
 #ap-reason,
+#ap-refuse,
 #ap-tel {
     color: #6373ff;
+}
+.ap-refuse,
+#reason_label {
+    display: none;
 }
 .weui-dialog,
 .weui-mask {

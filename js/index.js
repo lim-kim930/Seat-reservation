@@ -1,91 +1,75 @@
-window.onload = function () {
-    getSysTime();
-    //判断是否是管理员
-    if (location.search.substr(8) === "true")
+$(function () {
+
+    //先通过url参数和localStorage双重判断是否是管理员切换来的
+    if (location.search.substr(8) === "true" && sessionStorage.getItem('sr_Turned') !== null) {
         $("#call").text("老师");
-    //判断是否登录
-    else
-        $.ajax({
-            type: 'get',
-            url: 'https://seat.api.hduapp.com/user/info/getuserinfo',
-            xhrFields: {
-                withCredentials: true,
-            },
-            contentType: "application/x-www-form-urlencoded",
-            success: function (response) {
-                if (document.title === "座位预约系统") {
-                    if (response.uno === null) {
-                        window.location.href = "https://seat.api.hduapp.com/request";
-                    } else if (response.ifAdmin === false) {
-                        $("#call").text("同学");
-                        localStorage.setItem('user', JSON.stringify(response));
-                    } else if (response.ifAdmin === true) {
-                        $("#call").text("老师");
-                        localStorage.setItem('user', JSON.stringify(response));
-                        $('.redirect').show();
-                        window.location.href = "managerIndex.html";
-                    }
-                }
-                else {
-                    if (response.uno === null)
-                        window.location.href = "https://seat.api.hduapp.com/request";
-                    else if (response.ifAdmin === false)
-                        window.location.href = "index.html";
-                    else if (response.ifAdmin === true)
-                        localStorage.setItem('user', JSON.stringify(response));
-                }
-            },
-            error: function () {
-                alert("出错啦!请重新登录");
-                window.location.href = "https://seat.api.hduapp.com/request";
+        route();//判断路由
+        return;
+    }
+    else if (location.search.substr(8) !== "true" && sessionStorage.getItem('sr_Turned') !== null)
+        sessionStorage.removeItem('sr_Turned')
+    //再判断是否登录
+    $.ajax({
+        type: 'get',
+        url: 'https://seat.api.hduapp.com/user/getSelf',
+        xhrFields: {
+            withCredentials: true,
+        },
+        // headers: { staffID: 19270808 },
+        success: function (response) {
+            const data = response.data;
+            if (data === null || data === undefined) {//拿不到信息提示
+                weiAlert(0, "warn", "获取用户信息出错,请稍后重新登录再试,或联系管理员,错误信息: " + response.msg, "resign");
+                return
             }
-        })
-    route();
-}
+            if (document.title === "座位预约系统") {
+                if (data.staffTypeList.length === 1 && data.staffTypeList[0] === "STUDENT") {//只有一个学生身份时
+                    $("#call").text("同学");
+                    localStorage.setItem('user', JSON.stringify(response.data));
+                } else if (data.staffTypeList.indexOf("ADMIN") !== -1) {//只要有管理员
+                    $("#call").text("老师");
+                    localStorage.setItem('user', JSON.stringify(response.data));
+                    window.location.href = "managerIndex.html";
+                } else if (data.staffTypeList.indexOf("TEACHER") !== -1) {//有老师或者管理员身份时都显示为老师
+                    $("#call").text("老师");
+                    localStorage.setItem('user', JSON.stringify(response.data));
+                }
+            }
+            else if (document.title === "座位预约管理系统") {//判断为managrIndex.html
+                if (data.staffTypeList.indexOf("ADMIN") === -1)
+                    window.location.href = "index.html";
+                else if (data.staffTypeList.indexOf("TEACHER") !== -1 || data.staffTypeList.indexOf("ADMIN") !== -1)
+                    localStorage.setItem('user', JSON.stringify(response.data));
+            }
+        },
+        error: (err) => {
+            errHandle(0, err, "用户", "reload")
+        }
+    })
+    route();//判断路由
+})
 //底部按钮点击
 $(".footer span").on("click", function () {
     $(".checked").children().attr("src", "images/" + $(".checked").parent().attr("id") + "_before.png");
     $(this).siblings().children().removeClass("checked");
     $(this).children().addClass("checked").children().attr("src", "images/" + $(this).attr("id") + "_after.png");
 })
+//监听路由改变
 window.onhashchange = route;
-//路由改变
+//路由改变函数
 function route() {
-    let hash = location.hash;
-    hash = hash.replace('#', '');
+    let hash = location.hash.replace('#', '');
     switch (hash) {
         case '/home':
+        case "":
             $("#myAppage").hide();
             $("#pcpage").hide();
             $("#homepage").css("display", "flex");
             $("#home").click();
-            getSysTime();
-            break;
-        case '/myAp':
-            $("#homepage").hide();
-            $("#pcpage").hide();
-            $("#myAppage").show();
-            $("#myAp").click();
-            lookup();
-            break;
-        case '/pc':
-            $("#homepage").hide();
-            $("#myAppage").hide();
-            $("#pcpage").show();
-            $("#pc").click();
-            getUserInfo();
-            break;
-    }
-}
-//获取北京时间
-function getSysTime() {
-    $.ajax({
-        type: 'get',
-        url: 'https://quan.suning.com/getSysTime.do',
-        success: function (response) {
-            // response为服务器端返回的数据
-            var sDate = JSON.parse(response).sysTime2;
-            switch (Number(sDate.substring(11, 13))) {
+            // 根据时间设置首页greeting
+            const sysTime = getSysTime()
+            var sDate = sysTime.Systime3.time.split(":")[0];//拿到当前时间小时的值
+            switch (Number(sDate)) {
                 case 9: case 10: case 11:
                     $("#greeting").text("上午好");
                     break;
@@ -102,9 +86,21 @@ function getSysTime() {
                     $("#greeting").text("早上好");
                     break;
             }
-        },
-        error: function () {
-            alert("获取时间出错,请稍后重试或联系管理员");
-        }
-    })
+            break;
+        case '/myAp':
+            $("#homepage").hide();
+            $("#pcpage").hide();
+            $("#myAppage").show();
+            $("#myAp").click();
+            if ($("#title").text() === "我的预约" || ($("#title").text() === "审批管理" && roomID))
+                lookup();
+            break;
+        case '/pc':
+            $("#homepage").hide();
+            $("#myAppage").hide();
+            $("#pcpage").show();
+            $("#pc").click();
+            getUserInfo();
+            break;
+    }
 }

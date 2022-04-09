@@ -5,13 +5,12 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
-  <link rel="stylesheet" href="css/weui.css">
+  <link rel="stylesheet" href="css/weui.min.css">
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/qrSelect.css">
   <script src="js/jquery-3.5.1.js"></script>
   <script src="js/template-web.js"></script>
-  <script src="js/sa-self-adaption.js"></script>
-  <script src="js/selectMultip.js"></script>
+  <script src="js/self-adaption.js"></script>
   <title>扫码预约</title>
 </head>
 
@@ -29,16 +28,20 @@
       <div id="seat-info-container">
         <div>
           <span class="text-muted">当前选择座位: </span><span id="seatvalue" class="text-muted">未选择</span><span
-            class="input-warnning bg-danger"><img src="images/错误.svg">请选择</span>
+            class="input-warnning bg-danger"><img src="images/error.svg">请选择</span>
         </div>
       </div>
     </div>
     <div class="ap-selection">
       <div class="selection-info">
         <div class="using-time">
-          <span>使用时间</span><span><span id="using-time">请选择</span><img src="images/forward_gray.svg"></span>
-          <select id="time-option" multip>
-  
+          <span>开始时间</span><span><span id="using-time">请选择</span><img src="images/forward_gray.svg"></span>
+          <select id="time-option">
+          </select>
+        </div>
+        <div class="using-duration">
+          <span>使用时长</span><span><span id="using-duration">请选择</span><img src="images/forward_gray.svg"></span>
+          <select id="duration-option">
           </select>
         </div>
       </div>
@@ -47,24 +50,26 @@
       </div>
     </div>
     <div class="weui-dialog">
-      <div class="weui-dialog__hd" style="font-size: 16px; line-height: 18px;"><i class="glyphicon glyphicon-question-sign" style="color: #f1924e; font-size: 16px; width: 16px; vertical-align: middle;"></i> 你即将预约:</div>
+      <div class="weui-dialog__hd" style="font-size: 16px; line-height: 18px;"><i
+          class="glyphicon glyphicon-question-sign"
+          style="color: #f1924e; font-size: 16px; width: 16px; vertical-align: middle;"></i> 你即将预约:</div>
       <div class="weui-dialog__bd"></div>
       <div class="weui-dialog__ft">
-        <a href="javascript:cancel();" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
+        <a href="javascript:alertCallback('cancel');" class="weui-dialog__btn weui-dialog__btn_default">取消</a>
         <a href="javascript:submit();" class="weui-dialog__btn weui-dialog__btn_primary">确定</a>
       </div>
     </div>
     <div class="weui-dialog">
       <div class="weui-dialog__bd"></div>
       <div class="weui-dialog__ft">
-        <a href="javascript:redirect()" class="weui-dialog__btn weui-dialog__btn_primary">我知道了</a>
+        <a href="" class="weui-dialog__btn weui-dialog__btn_primary">我知道了</a>
       </div>
     </div>
     <div class="weui-mask"></div>
-    <script type="text/html" id="seat-tpl">
-        {{each seats}}
-        <button data-value="{{$value}}" class="btn btn-info" style="outline: none;">{{$value}}</button>
-        {{/each}}
+    <script type="text/html" id="time-tpl">
+      {{each tOption}}
+        <option value="{{$value.value}}">{{$value.text}}</option>
+      {{/each}}
     </script>
     <script type="text/html" id="room-info-tpl">
         <div><span class="text-muted">日期:</span><span id="date" class="text-muted">&nbsp{{dateUsed}}</span></div>
@@ -74,14 +79,15 @@
       <div>
         <span class="text-muted">当前选择座位:</span><span id="seatvalue" class="text-muted">&nbsp{{setName}}号</span>
       </div>
-      <div><span class="text-muted">该日不可预约小时段:</span><span id="dura" class="text-muted"></span></div>
+      <!-- <div><span class="text-muted">该日不可预约小时段:</span><span id="dura" class="text-muted"></span></div> -->
     </script>
-    <script type="text/html" id="disable-tpl">
+    <!-- <script type="text/html" id="disable-tpl">
       {{each}}
         &nbsp{{$value}}:00
       {{/each}}
-    </script>
-  <script src="js/qrSelect.js"></script>
+    </script> -->
+    <script src="js/publicFunction.js"></script>
+    <script src="js/qrSelect.js"></script>
 </body>
 
 </html>
