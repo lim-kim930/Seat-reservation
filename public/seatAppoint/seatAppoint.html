@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/seatAppoint.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <script src="../static/js/jquery-3.5.1.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/sa-self-adaption.js"></script>
+    <script src="../static/js/template-web.js"></script>
+    <title>座位预约</title>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="header-nav">
+        <span><a href="../"><img src="../images/首页.svg"> 首页</a></span>
+        <span id="idConfig">座位预约</span>
+        <span><a data-toggle="modal" data-target="#myModal"><img src="../images/说明.svg">预约说明</a></span>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">座位预约说明</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"
+                        style="outline: none;">我知道了</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 主体 -->
+    <div class="content">
+        <div class="ap-selection">
+            <div class="selection-info">
+                <!-- <div class="using-date">
+                    <span>使用日期</span><span><span id="using-date"></span><img src="../images/前往.svg"></span>
+                    <select id="date-option">
+
+                    </select>
+                </div> -->
+                <div class="using-room">
+                    <span>选择教室</span><span><span id="using-room"></span><img src="../images/前往.svg"></span>
+                    <select id="room-option">
+                        
+                    </select>
+                </div>
+                <div class="using-time">
+                    <span>开始时间</span><span><span id="using-time"></span><img src="../images/前往.svg"></span>
+                    <select id="time-option">
+
+                    </select>
+                </div>
+                <div class="using-duration">
+                    <span>使用时长</span><span><span id="using-duration"></span><img src="../images/前往.svg"></span>
+                    <select id="duration-option">
+
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="start">
+            <div class="seat-start"><span>开始选座</span></div>
+        </div>
+    </div>
+    <!-- <script type="text/html" id="date-tpl">
+		<option value="0">{{Month}}月{{Day}}日</option>
+        <option value="1">{{nextMonth}}月{{nextDay}}日</option>
+	</script> -->
+    <script type="text/html" id="room-tpl">
+        {{each rOption}}
+		<option value="{{$value.id}}">{{$value}}</option>
+        {{/each}}
+	</script>
+    <script type="text/html" id="time-tpl">
+        {{each tOption}}
+		<option value="{{$value}}">{{$value}}:00</option>
+        {{/each}}
+	</script>
+    <script type="text/html" id="duration-tpl">
+        {{each dOption}}
+		<option value="{{$value}}">{{$value}}小时</option>
+        {{/each}}
+	</script>
+    <script src="../static/js/Gender.js"></script>
+    <script src="js/seatAppoint.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/message.css">
+    <link rel="stylesheet" href="../zbootstrap/css/bootstrap.min.css">
+    <script src="../static\js\jquery-3.5.1.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../static/js/self-adaption.js"></script>
+    <title>消息</title>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="header-nav">
+        <span><a href="../"><img src="../images/首页.svg"> 首页</a></span>
+        <span>消息</span>
+    </div>
+    <!-- 主体 -->
+    <div class="content">
+        <div class="notice" id="1">
+            <div class="notice-header">
+                <span id="notice-type"><h4>签到提醒</h4></span><span class ="text-muted" id="notice-check"><img src="../images/查看.svg">查看详情</span>
+            </div>
+            <div class="notice-content text-muted">
+                <h5>你预约的<span>03月10日14:00</span>的<span>10教121教室 座位19</span>可以开始签到啦,请及时签到,座位将最晚为你保留到<span>14:15</span></h5>
+            </div>
+        </div>
+        <div class="notice" id="2">
+            <div class="notice-header">
+                <span id="notice-type"><h4>签退提醒</h4></span><span class ="text-muted" id="notice-check"><img src="../images/查看.svg">查看详情</span>
+            </div>
+            <div class="notice-content text-muted">
+                <h5>十分钟后您将结束自习,请做好签退准备</h5>
+            </div>
+        </div>
+        <div class="notice" id="3">
+            <div class="notice-header">
+                <span id="notice-type"><h4>审批通过提醒</h4></span><span class ="text-muted" id="notice-check"><img src="../images/查看.svg">查看详情</span>
+            </div>
+            <div class="notice-content text-muted">
+                <h5>你提交的<span>XX月XX日XX:XX</span>的<span>XX教室</span>使用申请,已通过审批</h5>
+            </div>
+        </div>
+    </div>
+    <script src="js/message.js"></script>
+</body>
+
+</html>

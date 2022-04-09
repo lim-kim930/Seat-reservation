@@ -1,0 +1,136 @@
+a,
+a:hover{
+    text-decoration: none !important;
+}
+.header-nav {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    background-color: #4b4e55;
+    height: 44px;
+}
+.header-nav img {
+    width: 16px;
+    vertical-align: text-top;
+    margin-right: 1px;
+}
+.header-nav span {
+    margin: 0 10px;
+}
+.header-nav span a {
+    display: block;
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    color: #fff;
+    font-size: 16px;
+}
+.header-nav span:nth-child(2){
+    position: absolute;
+    color: #fff;
+    line-height: 44px;
+    font-size: 18px;
+    left: 50%;
+    margin-left: -36px;
+}
+.content {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+.selection-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+.selection-info div {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    border-top: 1px solid rgb(224, 224, 224);
+}
+.selection-info div:last-child {
+    height: 120px;
+    border-top: none;
+    border-bottom: 1px solid rgb(224, 224, 224);
+}
+.selection-info div span {
+    margin: 0 10px;
+    font-size: 14px;
+}
+.selection-info img {
+    width: 17px;
+    vertical-align: text-top;
+    margin-right: 1px;
+}
+.selection-info select {
+    position: absolute;
+    width: 50%;
+    left: 45%;
+    height: 50px;
+    opacity: 0;
+}
+.using-pn input {
+    width: 100%;
+    outline: none;
+}
+.using-reason textarea {
+    float: left;
+    width: 90%;
+    margin-left: 5%;
+    height: 100px;
+    outline: none;
+    resize: none;
+}
+.using-quantum span {
+    width: 100px;
+}
+#quantum-option {
+    display: block;
+    border: none;
+}
+#quantum-option span {
+    display: inline-block;
+    height: 30px;
+    width: 25% !important;
+    margin: 0 0 7px 6.25%;
+    line-height: 28px;
+    text-align: center;
+    border-radius: 7px;
+    border: 1px solid rgb(224, 224, 224);
+    box-sizing: border-box;
+}
+
+.input-warnning {
+    display: none;
+    padding: 3px;
+    border-radius: 5px;
+}
+.start {
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 300px;
+    height: 56px;
+    bottom: 0;
+    background-color: #fff;
+    border-top: 1px solid rgb(240, 239, 239);
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+}
+.start div {
+    width: 80%;
+    margin-top: 8px;
+    margin-left: 10%;
+    height: 40px;
+    color: #fff;
+    font-size: 16px;
+    line-height: 40px;
+    text-align: center;
+    background-color: #23c4b7;
+    border-radius: 5px;
+}

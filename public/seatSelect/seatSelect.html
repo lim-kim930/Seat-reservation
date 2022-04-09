@@ -1,0 +1,131 @@
+﻿<!doctype html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+	<title>选择座位</title>
+	<link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/seatSelect.css">
+	<script src="../static\js\jquery-3.5.1.js"></script>
+	<script src="../static/bootstrap/js/bootstrap.min.js"></script>
+	<script src="../static/js/template-web.js"></script>
+	<script src="../static/js/self-adaption.js"></script>
+</head>
+
+<body>
+	<!-- 头部 -->
+	<div class="header-nav">
+		<span><a href="../"><img src="../images/首页.svg"> 首页</a></span>
+		<span id="idConfig">选择座位</span>
+		<span><a href="javascript:history.back(-1)"><img src="../images/取消.svg">取消</a></span>
+	</div>
+	<div class="wrapper">
+		<div class="container">
+			<div id="seat-map">
+				<button></button>
+				<div class="ap-info">
+					<h4>预约信息:</h4>
+					<div><span>开始时间:</span><span id="starttime"></span></div>
+					<div><span>结束时间:</span><span id="endtime"></span></div>
+					<div><span>教室:</span><span id="room"></span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+		var seat = '22'
+		var room = sessionStorage.getItem('room')
+		var dura = sessionStorage.getItem('dura')
+		$('button').on('click', function () {
+			$.ajax({
+				// 请求方式
+				type: 'post',
+				// 请求地址
+				url: 'http://api.ml.limkim.xyz:3000/set/orderset',
+				data: JSON.stringify({
+					roomname: room,
+					length: dura,
+					set: seat,
+				}),
+				contentType: 'application/json',
+				// 请求成功以后函数被调用
+				success: function (response) {
+					// response为服务器端返回的数据
+					// 方法内部会自动将json字符串转换为json对象
+					console.log(response);
+					// window.location.href = "../seatSelect";
+				}
+			})
+		})
+		console.log(location.search.substr(1).split('&'));
+		// var firstSeatLabel = 10;
+		// var max = 1;
+		// $(document).ready(function () {
+		// 	sc = $('#seat-map').seatCharts({
+		// 		map: [
+		// 			'ffffff',
+		// 			'______',
+		// 			'_ffff_',
+		// 			'_ffff_'
+		// 		],
+		// 		seats: {
+		// 			f: {
+		// 				classes: 'first-class', //your custom CSS class
+		// 			}
+		// 		},
+		// 		naming: {
+		// 			top: true,
+		// 			left: true,
+		// 			getLabel: function (sNumber) {
+		// 				return sNumber;
+		// 			},
+		// 		},
+		// 		legend: {
+		// 			node: $('#legend'),
+		// 			items: [
+		// 				['f', 'available', '可选'],
+		// 				['f', 'unavailable', '已预约']
+		// 			]
+		// 		},
+		// 		focus: false,
+		// 		click: function () {
+		// 			if (this.status() == 'available') {
+		// 				if ((sc.find('selected').length + 1) > max) {
+		// 					alert('一次最多购买' + sc.find('selected').length + '张');
+		// 					return 'available';
+		// 				}
+
+		// 				return 'selected';
+		// 			} else if (this.status() == 'selected') {
+
+		// 				return 'available';
+		// 			} else if (this.status() == 'unavailable') {
+		// 				//seat has been already booked
+		// 				return 'unavailable';
+		// 			} else {
+		// 				return this.style();
+		// 			}
+		// 		}
+		// 	});
+		// 	//this will handle "[cancel]" link clicks
+		// 	$('#selected-seats').on('click', '.cancel-cart-item', function () {
+		// 		//let's just trigger Click event on the appropriate seat, so we don't have to repeat the logic here
+		// 		sc.get($(this).parents('li:first').data('seatId')).click();
+		// 		recalculateTotal(sc);
+
+		// 	});
+		// 	//已经被选的座位
+		// 	sc.get(['1_2', '2_3', '3_5',]).status('unavailable');
+
+		// });
+		// function recalculateTotal(sc) {
+		// 	//basically find every selected seat and sum its price
+		// 	console.log(sc.find('selected'));
+
+		// }
+	</script>
+</body>
+
+</html>

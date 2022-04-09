@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/appointtInfo.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <script src="../static\js\jquery-3.5.1.js"></script>
+    <script src="../static/js/self-adaption.js"></script>
+    <script src="../static/js/template-web.js"></script>
+    <title>预约详情</title>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="header-nav">
+        <span><a href="../"><img src="../images/首页.svg"> 首页</a></span>
+        <span>预约详情</span>
+        <span><a href="../myAppointment/"><img src="../images/预约.svg">全部预约</a></span>
+    </div>
+    <!-- 主体 -->
+    <div class="content"></div>
+    <script type="text/html" id="apInfo-tpl">
+        <div id="ap">
+            <div class="ap-status text-muted"><h3>{{status}}</h3></div>
+            <div class="ap-info">
+                <div class="ap-room">
+                    <span><h4>教室:</h4></span>
+                    <span class="text-muted" id="ap-room"><h5>{{room}}</h5></span>
+                </div>
+                <div class="ap-seat">
+                    <span><h4>座位号:</h4></span>
+                    <span class="text-muted" id="ap-seat"><h5>{{seat}}</h5></span>
+                </div>
+                <div class="ap-start-time">
+                    <span><h4>开始时间:</h4></span>
+                    <span class="text-muted" id="ap-start-time"><h5>{{startDate}}  {{startTime}}:00</h5></span>
+                </div>
+                <div class="ap-end-time">
+                    <span><h4>结束时间:</h4></span>
+                    <span class="text-muted" id="ap-end-time"><h5>{{endDate}}  {{endTime}}:00</h5></span>
+                </div>
+            </div>
+        </div>
+        <div class="leave">
+            <button type="button" class="btn btn-success"><img src="../images/离开,时间.svg">{{status}}</button>
+        </div>
+    </script>
+    <script src="js/appointInfo.js"></script>
+</body>
+
+</html>

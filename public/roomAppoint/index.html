@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/roomAppoint.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <script src="../static\js\jquery-3.5.1.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/ra-self-adaption.js"></script>
+    <script src="../static/js/template-web.js"></script>
+    <title>教室预约</title>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="header-nav">
+        <span><a href="../"><img src="../images/首页.svg"> 首页</a></span>
+        <span id="idConfig">教室预约</span>
+        <span><a href="javascript:;" data-toggle="modal" data-target="#myModal"><img
+                    src="../images/说明.svg">预约说明</a></span>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">教室预约说明</h4>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"
+                        style="outline: none;">我知道了</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 主体 -->
+    <div class="content">
+        <div class="ap-selection">
+            <div class="selection-info">
+                <div class="using-room">
+                    <span>选择教室</span><span><span id="using-room"></span><img src="../images/前往.svg"></span>
+                    <select id="room-option">
+
+                    </select>
+                </div>
+                <!-- <div class="using-date">
+                    <span>使用日期</span><span><span id="using-date"></span><img src="../images/前往.svg"></span>
+                    <select id="date-option">
+
+                    </select>
+                </div> -->
+                <div class="using-quantum">
+                    <span>可选择时间段</span>
+                </div>
+                <div id="quantum-option" style="height: 190px;">
+                    
+                </div>
+                <div class="using-pn">
+                    <span>使用人数</span>
+                    <span class="input-warnning bg-danger"><img src="../images/错误.svg">请输入正确的人数</span>
+                    <span style="width: 20%;"><input type="text" id="using-pn"></span>
+                </div>
+                <div class="using-reason">
+                    <span>申请理由</span>
+                    <span class="input-warnning bg-danger"><img src="../images/错误.svg">申请理由不能为空</span>
+                </div>
+                <div class="using-reason">
+                    <textarea type="text" id="using-reason" placeholder="请描述你的申请理由,以便辅导员快速审核"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="start">
+            <div class="room-start"><span>提交申请</span></div>
+        </div>
+    </div>
+
+    <!-- <script type="text/html" id="date-tpl">
+		<option value="0">{{Month}}月{{Day}}日</option>
+        <option value="1">{{nextMonth}}月{{nextDay}}日</option>
+	</script> -->
+    <script type="text/html" id="quantum-tpl">
+        {{each}}
+		<span class="bg-success" id="{{$value.s}}" onclick= "choosen(this)" data-flag = 0>{{$value.s}}:00~{{$value.e}}:00</span>
+        {{/each}}
+	</script>
+    <script type="text/html" id="room-tpl">
+        {{each rOption}}
+		<option value="{{$index}}">{{$index}} 容量{{$value[0]}}人</option>
+        {{/each}}
+	</script>
+
+    <script src="../static/js/Gender.js"></script>
+    <script src="js/roomAppoint.js"></script>
+    <script>
+
+    </script>
+</body>
+
+</html>

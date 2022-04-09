@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/myApproval.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <script src="../static\js\jquery-3.5.1.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/ma-self-adaption.js"></script>
+    <script src="../static/js/template-web.js"></script>
+    <title>所有申请</title>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="header-nav">
+        <span><a href="../"><img src="../images/首页.svg"> 首页</a></span>
+        <span>所有申请</span>
+    </div>
+    <!-- 主体 -->
+    <div class="content">
+        <div id="ap-content">
+            <span class="warnning">现在还没有提交的申请!</span>
+        </div>
+        <div id="statistic"></div>
+    </div>
+    <script type="text/html" id="myAp-tpl">
+        {{each ap}}
+        <div class="ap-info" id="{{$index}}">
+            <h4><span id="room-number">{{$value.room}}</span>教室</h4>
+            <h5>开始时间: <span class="text-muted" id="start-time">{{$value.startDate}}  {{$value.startTime}}:00</span></h5>
+            <h5>结束时间: <span class="text-muted" id="end-time">{{$value.endDate}}  {{$value.endTime}}:00</span></h5>
+            <h5>申请人: <span class="text-muted" id="end-time">{{$value.applicant}}</span></h5>
+            <div id="sign-info">
+                <span class="text-muted" id="signin-info">{{$value.status}}</span>
+            </div>
+        </div>
+        {{/each}}
+    </script>
+    <script type="text/html" id="statistic-tpl">
+        <div><h5>申请总数:<span id="seat-times">{{total}}</span>次</h5></div>
+        <div><h5>待审批数:<span id="breach-times">{{undo}}</span>件</h5></div>
+	</script>
+    <script src="js/myApproval.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/myAppointment.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <script src="../static\js\jquery-3.5.1.js"></script>
+    <!-- <script src="../static/bootstrap/js/bootstrap.min.js"></script> -->
+    <script src="js/ma-self-adaption.js"></script>
+    <script src="../static/js/template-web.js"></script>
+    <title>我的预约</title>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="header-nav">
+        <span><a href="../"><img src="../images/首页.svg"> 首页</a></span>
+        <span>我的预约</span>
+    </div>
+    <!-- 主体 -->
+    <div class="content">
+        <div class="content-nav">
+            <a href="javascript:void(0);" id="seat-btn" onclick="seatSelect();">座位</a><a href="javascript:void(0);"
+                id="room-btn" onclick="roomSelect();">教室</a>
+            <span id="pointer"></span>
+        </div>
+        <div id="seat-content">
+            <span class="warnning">你还没有预约过教室哦!</span>
+        </div>
+        <div id="room-content">
+            <span class="warnning">你还没有预约过教室哦!</span>
+        </div>
+        <div id="statistic"></div>
+    </div>
+    <script type="text/html" id="myAp-tpl">
+        {{each ap}}
+        <div class="seat-info {{$value.status.signinClass}}-div" id="{{$index}}">
+            <h4><span id="room-number">{{$value.room}}</span>教室&nbsp&nbsp<span id="seat-number">{{$value.seat}}</span>号座位</h4>
+            <h5>开始时间: <span class="text-muted" id="start-time">{{$value.startDate}}  {{$value.startTime}}:00</span></h5>
+            <h5>结束时间: <span class="text-muted" id="end-time">{{$value.endDate}}  {{$value.endTime}}:00</span></h5>
+            <div id="sign-info">
+                <span class="{{$value.status.signinClass}}-span" id="signin-info">{{$value.status.signin}}</span>
+                <span class="{{$value.status.signoutClass}}-span" id="signout-info">{{$value.status.signout}}</span>
+            </div>
+        </div>
+        {{/each}}
+    </script>
+    <script type="text/html" id="statistic-tpl">
+        <div class="seat-times"><h5>预约次数:<span id="seat-times">{{times}}</span>次</h5></div>
+        <div class="breach-times"><h5>违约次数:<span id="breach-times">{{breach}}</span>次</h5></div>
+	</script>
+    <script src="js/myAppointment.js"></script>
+</body>
+
+</html>

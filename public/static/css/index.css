@@ -1,0 +1,116 @@
+a,
+a:hover{
+    text-decoration: none !important;
+}
+.header-nav {
+    display: flex;
+    justify-content: space-between;
+    background-color: #4b4e55;
+    height: 44px;
+}
+.header-nav img {
+    width: 16px;
+    vertical-align: text-top;
+    margin-right: 1px;
+}
+.header-nav span {
+    margin: 0 10px;
+}
+.header-nav span a {
+    display: block;
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    color: #fff;
+    font-size: 16px;
+    
+}
+.header-nav span:nth-child(2){
+    color: #fff;
+    line-height: 44px;
+    font-size: 18px;
+}
+.content {
+    display: flex;
+    flex-direction: column;
+    background-color: #f5f7f7;
+}
+.select-btn {
+    height: 180px;
+    margin: 15px 10px 0 10px;
+    box-sizing: content-box;
+    border-radius: 8px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+.select-btn:last-child {
+    margin-bottom: 15px;
+}
+.seat-res {
+    margin-top: 20px;
+    background-color: #f7fffe;
+}
+.seat-res a,
+.seat-res a:hover {
+    color: #23c4b7;
+}
+.room-res {
+    background-color: #fffdfc;
+}
+.room-res a,
+.room-res a:hover {
+    color: #fc814a;
+}
+.code-res {
+    background-color: #f7f9ff;
+}
+.code-res a,
+.code-res a:hover {
+    color: #5785f4;
+}
+.select-btn p:nth-child(2) {
+    font-size: 16px;
+}
+.select-btn a {
+    display: flex;
+}
+.selection-info {
+    flex: 1;
+    margin: 0 15px;
+}
+.selection-img,
+.select-btn div img {
+    width: 100px;
+    height: 100px;
+}
+.select-btn div img {
+    margin-top: 40px;
+    opacity:0.4;
+}
+.mes-notice {
+    position: fixed;
+    vertical-align: middle;
+    right: 0;
+    bottom: 40px;
+    width: 70px;
+    height: 40px;
+    font-size: 16px;
+    background-color: #4b4e55;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    box-shadow: -3px 3px 5px rgba(0, 0, 0, 0.2);
+
+}
+.mes-notice span {
+    line-height: 40px;
+    padding: 0;
+    text-align: center;
+    color: #fff;
+}
+.mes-notice a {
+    width: 100%;
+    height: 100%;
+}
+.mes-notice img {
+    width: 16px;
+    margin-right: 3px;
+}

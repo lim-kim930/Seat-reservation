@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <title>扫码预约</title>
+  <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/qrCode.css">
+  <script src="../static/js/jquery-3.5.1.js"></script>
+  <script src="../static/js/self-adaption.js"></script>
+  <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+  <script src="../static/js/template-web.js"></script>
+  <script src="js/jsQR.js"></script>
+</head>
+
+<body>
+  <!-- 头部 -->
+  <div class="header-nav">
+    <span><a href="../"><img src="../images/首页.svg"> 首页</a></span>
+    <span id="idConfig">扫码预约</span>
+    <span><a href="javascript:history.back(-1)"><img src="../images/取消.svg">取消</a></span>
+  </div>
+  <!-- 模态框 -->
+  <div class="modal fade" id="tipModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">为你找到一个座位信息</h4>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal" style="outline: none;">取消</button>
+          <button type="button" class="btn btn-primary"
+            style="background-color: #5785F4; outline: none; border:none;" onclick="apsubmit()">确认预约</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="loadingMessage">🎥 没有获取到视频信息(请确保给予我们相机权限)</div>
+  <canvas id="canvas" hidden></canvas>
+  <div id="output" hidden>
+    <div id="outputMessage">没有发现二维码</div>
+    <div hidden><b>解析中...</b> <span id="outputData"></span></div>
+  </div>
+  <audio id="success" src="success.mp3"></audio>
+  
+  <script type="text/html" id="info-tpl">
+    <h5>教室:{{room}} 座位:{{seat}}</h5>
+  </script>
+  <script src="js/jsQCode.js"></script>
+</body>
+
+</html>

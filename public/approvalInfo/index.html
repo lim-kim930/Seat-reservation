@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="css/approvalInfo.css">
+    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+    <script src="../static\js\jquery-3.5.1.js"></script>
+    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../static/js/self-adaption.js"></script>
+    <title>预约详情</title>
+</head>
+
+<body>
+    <!-- 头部 -->
+    <div class="header-nav">
+        <span><a href="../"><img src="../images/首页.svg"> 首页</a></span>
+        <span>申请详情</span>
+        <span><a href="../myApproval/"><img src="../images/审批.svg">所有申请</a></span>
+    </div>
+    <!-- 主体 -->
+    <div class="content">
+        <div class="ap-info">
+            <div class="ap-room">
+                <span>
+                    <h4>教室:</h4>
+                </span>
+                <span class="text-muted">
+                    <h5 id="ap-room"></h5>
+                </span>
+            </div>
+            <div class="ap-number">
+                <span>
+                    <h4>使用人数:</h4>
+                </span>
+                <span class="text-muted">
+                    <h5 id="ap-number"></h5>
+                </span>
+            </div>
+            <div class="ap-start-time">
+                <span>
+                    <h4>开始时间:</h4>
+                </span>
+                <span class="text-muted">
+                    <h5 id="ap-start-date">2020-03-06</h5>
+                    <h5 id="ap-start-time">13:00</h5>
+                </span>
+            </div>
+            <div class="ap-end-time">
+                <span>
+                    <h4>结束时间:</h4>
+                </span>
+                <span class="text-muted">
+                    <h5 id="ap-end-date"></h5>
+                    <h5 id="ap-end-time"></h5>
+                </span>
+            </div>
+            <div class="ap-user">
+                <span>
+                    <h4>申请人:</h4>
+                </span>
+                <span class="text-muted">
+                    <h5 id="ap-uname"></h5>
+                    <h5 id="ap-uno"></h5>
+                </span>
+            </div>
+            <div class="ap-reason" style="width: 100%;">
+                <span>
+                    <h4>申请理由:</h4>
+                </span>
+                <div class="text-muted" id="ap-reason"></div>
+            </div>
+        </div>
+        <div class="ap-btn">
+            <div class="ap-agree">
+                <button type="button" class="btn btn-success" id="agree-btn" disabled>同意申请</button>
+            </div>
+            <div class="ap-disagree">
+                <button type="button" class="btn btn-danger" id="disagree-btn" disabled>拒绝申请</button>
+            </div>
+        </div>
+    </div>
+    <script src="js/approvalInfo.js"></script>
+</body>
+
+</html>

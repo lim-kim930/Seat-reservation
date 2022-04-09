@@ -1,0 +1,178 @@
+a,
+a:hover{
+    text-decoration: none !important;
+}
+.header-nav {
+    position: relative;
+    background-color: #4b4e55;
+    height: 44px;
+}
+.header-nav span {
+    float: left;
+    margin: 0 15px;
+}
+.header-nav span a {
+    display: block;
+    width: 100%;
+    height: 44px;
+    line-height: 44px;
+    color: #fff;
+    font-size: 16px;
+}
+.header-nav span:nth-child(2){
+    position: absolute;
+    left: 50%;
+    margin-left: -30px;
+    color: #fff;
+    line-height: 44px;
+    font-size: 18px;
+}
+.header-nav span img {
+    width: 16px;
+    vertical-align: text-top;
+}
+.content-nav {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    margin: 0 auto;
+    border-bottom: 1px solid rgb(240, 239, 239);
+    box-sizing: border-box;
+}
+
+#seat-btn, #room-btn {
+    display: inline-block;
+    margin-left: 0;
+    text-align: center;
+    width: 50%;
+    height: 40px;
+    font-size: 14px;
+    line-height: 40px;
+    box-sizing: border-box;
+    color: #23C4B7;
+    font-weight: 700;
+    transition: all 0.4s;
+}
+#room-btn {
+    color: #a3a3a3;
+    font-weight: 400;
+}
+
+#pointer {
+    display: inline-block;
+    position: absolute;
+    width: 50%;
+    height: 2px;
+    background-color: #23C4B7;
+    bottom: 0;
+    left: 0;
+    transition: all 0.4s;
+}
+
+.content {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+#seat-content, #room-content {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    position: absolute;
+    margin-top: 0;
+    width: 100%;
+    left: 0;
+    transition: all 0.5s;
+    height: 200px;
+    overflow: auto;
+}
+#room-content {
+    left: 100%;
+}
+.warnning {
+    display: inline-block;
+    width: 100%;
+    margin-top: 200px;
+    text-align: center;
+    color: rgb(177, 180, 185);
+    user-select: none;
+}
+.seat-info {
+    position: relative;
+    height: 180px;
+    width: 95%;
+    min-height: 180px;
+    min-width: 300px;
+    margin-top: 10px;
+    border-radius: 7px;
+    border: 1px solid #88888817;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+}
+.seat-info:first-child {
+    margin-top: 15px;
+}
+.seat-info:last-child {
+    margin-bottom: 50px;
+}
+.seat-info h4 {
+    text-indent: 10px;
+    font-weight: 700;
+}
+.seat-info h5 {
+    text-indent: 15px;
+    font-weight: 700;
+}
+#sign-info {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 150px;
+    height: 70px;
+    font-weight: 700;
+    font-size: 18px;
+}
+.singed-span {
+    color: #29c27b;
+}
+.unsinged-span {
+    color: #cdcdcd;
+}
+.breached-span {
+    color: #e43953;
+}
+.singed-div,
+.unsinged-div {
+    background-color: #1ec07402;
+}
+.breached-div {
+    background-color: #e4304b02;
+}
+#statistic {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 300px;
+    height: 40px;
+    bottom: 0;
+    margin-top: 5px;
+    background-color: #fff;
+    border-top: 1px solid rgb(240, 239, 239);
+    box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.1);
+}
+#statistic div {
+    margin: 0 2.5%;
+}
+#statistic div h5 {
+    font-weight: 700;
+}
+.seat-times {
+    color: #9e9e9e;
+}
+.breach-times {
+    color: #ed2327;
+}
